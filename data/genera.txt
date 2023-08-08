@@ -1,0 +1,598 @@
+Enhydrobacter
+Escherichia-Shigella
+Cutibacterium
+Delftia
+Bradyrhizobium
+Oleiphilus
+Stenotrophomonas
+Staphylococcus
+Methylobacterium-Methylorubrum
+Aureicoccus
+Arenicella
+BD1-7 clade
+Tenacibaculum
+Streptococcus
+Undibacterium
+Cognatishimia
+MBIC10086
+Marivivens
+Erythrobacter
+Corynebacterium
+Sphingomonas
+Alcanivorax
+Pseudahrensia
+Ralstonia
+Aquibacter
+Micrococcus
+Blastocatella
+Afipia
+Pseudofulvibacter
+Salinirepens
+Oleibacter
+Xylophilus
+Urania-1B-19 marine sediment group
+Kinneretia
+Acinetobacter
+Winogradskyella
+Phreatobacter
+Vibrionimonas
+Fluviicola
+Turicella
+Crinalium SAG 22.89
+Asinibacterium
+Lactobacillus
+Sva0996 marine group
+Aurantivirga
+Planktotalea
+Moheibacter
+Haemophilus
+Rubritalea
+Peredibacter
+Albimonas
+Ruegeria
+HTCC5015
+Symphothece PCC-7002
+Muricauda
+Loktanella
+Aestuariibacter
+Aquimarina
+Pseudoalteromonas
+Aureispira
+Dietzia
+Fabibacter
+Lentimonas
+Paracoccus
+Marinoscillum
+Alcaligenes
+Massilia
+Spongiivirga
+Roseovarius
+Rudaea
+Luteolibacter
+Ekhidna
+Marinobacter
+Photobacterium
+Lawsonella
+Lactiplantibacillus
+Chryseobacterium
+Brochothrix
+Coraliomargarita
+Cellulomonas
+Defluviimonas
+Roseimarinus
+NS2b marine group
+Acrophormium PCC-7375
+Schleiferia
+Saprospira
+Zeaxanthinibacter
+Bosea
+Maricaulis
+Halioglobus
+Kocuria
+Altererythrobacter
+Leuconostoc
+Bdellovibrio
+Lactococcus
+Thaumasiovibrio
+Halomonas
+Portibacter
+Shimia
+Candidatus Obscuribacter
+Reichenbachiella
+Alloiococcus
+Ilumatobacter
+Microbacterium
+Flavicella
+Rhodococcus
+Lentisphaera
+Gilvibacter
+Actibacterium
+Lewinella
+Labrenzia
+Vibrio
+Cobetia
+Brevundimonas
+Synechococcus CC9902
+Silicimonas
+Persicobacter
+Finegoldia
+Woeseia
+Granulicatella
+Rothia
+Gemella
+Propionigenium
+Parahaliea
+HIMB11
+Balneola
+Filomicrobium
+Candidatus Endoecteinascidia
+Candidatus Puniceispirillum
+Romboutsia
+Catenococcus
+Hellea
+Blastopirellula
+Solirubrobacter
+Salinimonas
+Rubripirellula
+Oleispira
+Porphyromonas
+Brachybacterium
+Cerasicoccus
+Calorithrix
+Dokdonia
+Dasania
+Aureisphaera
+Kytococcus
+Crocinitomix
+Actibacter
+Schizothrix LEGE 07164
+Agaribacter
+Lutimonas
+Salinicoccus
+Chroococcidiopsis PCC-6712
+Fuerstia
+Clostridium sensu stricto 1
+Thalassolituus
+Muriicola
+Reyranella
+Marinifilum
+Agarivorans
+Phormidesmis ANT.LACV5.1
+Prochlorococcus MIT9313
+Persicirhabdus
+MD3-55
+Halovulum
+Gayadomonas
+C1-B045
+Dyadobacter
+Pseudorhodoferax
+Deinococcus
+Prevotella
+Lacimonas
+NS10 marine group
+Wohlfahrtiimonas
+Leucobacter
+Litorimicrobium
+Weissella
+Gordonia
+Wenyingzhuangia
+Treponema
+Eionea
+NS4 marine group
+Truepera
+Mangrovimonas
+Roseomonas
+Dermacoccus
+Nocardioides
+Haliea
+Pseudomonas
+Actinomyces
+Bacillus
+Atopobium
+Leptolyngbya PCC-6406
+OM60(NOR5) clade
+Amaricoccus
+Phaeodactylibacter
+Roseibacillus
+Allorhizobium-Neorhizobium-Pararhizobium-Rhizobium
+Aureitalea
+Subgroup 10
+Ulvibacter
+Atopostipes
+Agaribacterium
+Candidatus Desulfamplus
+Lutibacter
+Psychrobacter
+Rhodopirellula
+Neisseria
+NS5 marine group
+OM27 clade
+Veillonella
+Sediminitomix
+Cloacibacterium
+Spirosoma
+Flavobacterium
+Kordia
+CL500-3
+Maritimimonas
+Tepidimonas
+Parvularcula
+Subgroup 23
+Acanthopleuribacter
+Iamia
+Pirellula
+Fusobacterium
+Carnobacterium
+Limnothrix
+Flammeovirga
+Oceanicola
+Aurantiacicella
+B2706-C7
+Cribrihabitans
+Candidatus Amoebophilus
+Psychroflexus
+Candidatus Endobugula
+Dinoroseobacter
+Thalassobaculum
+Granulosicoccus
+Synechococcus PCC-7336
+Hoeflea
+Pir4 lineage
+Acidibacter
+Macellibacteroides
+SCGC AAA164-E04
+Leptotrichia
+Roseobacter clade CHAB-I-5 lineage
+SM1A02
+Paenochrobactrum
+Phycisphaera
+Paucibacter
+Aquabacterium
+Kordiimonas
+R76-B128
+Cetobacterium
+Xenococcus PCC-7305
+Thalassococcus
+Octadecabacter
+Woodsholea
+Pleurocapsa PCC-7319
+Oceaniserpentilla
+Knoellia
+Nautella
+Salinihabitans
+Pseudochrobactrum
+Pseudoruegeria
+Sphingorhabdus
+Cm1-21
+Pseudaestuariivita
+Psychromonas
+Reinekea
+Rhodopseudomonas
+Agrococcus
+Spirochaeta 2
+Auricoccus-Abyssicoccus
+Thalassotalea
+Pseudoxanthomonas
+Magnetospira
+Algitalea
+Limibaculum
+Celeribacter
+Conchiformibius
+Congregibacter
+Sva0081 sediment group
+Paramoritella
+UCG-005
+Halomicronema TFEP1
+Croceibacter
+Litoreibacter
+Perspicuibacter
+Caldora VP642b
+Candidatus Megaira
+Alistipes
+Roseobacter clade Marinomonas lineage
+Alloprevotella
+Paenalcaligenes
+Rathayibacter
+Gardnerella
+Anaerococcus
+Coxiella
+DEV008
+Thermomonas
+Leifsonia
+Peptoniphilus
+Enterococcus
+Prevotella_7
+Vicingus
+Ochrovirga
+Seonamhaeicola
+Candidatus Fritschea
+Maritimibacter
+Providencia
+Marinibacterium
+Acetobacter
+Caulobacter
+Fulvivirga
+Pseudooceanicola
+Endozoicomonas
+Pseudooctadecabacter
+Algicola
+Cucumibacter
+Capnocytophaga
+Psychrosphaera
+Daeguia
+Lautropia
+Nubsella
+Desulfotalea
+Bryocella
+Lentibacter
+Rubidimonas
+Planctomicrobium
+Pelagicoccus
+Phormidium MBIC10003
+Sulfitobacter
+Verruc-01
+Candidatus Nitrosopumilus
+Marinicaulis
+Clade Ia
+Candidatus Nucleicultrix
+Oceanicella
+Brevibacterium
+Hyphomonas
+P3OB-42
+Clade Ib
+Grimontia
+Ferrimonas
+Owenweeksia
+Agarilytica
+Geminobacterium
+Exiguobacterium
+Rheinheimera
+Vadicella
+Allofrancisella
+Algimonas
+OM75 clade
+Fusibacter
+Gemmatirosa
+Aureibacter
+Psychroserpens
+Rhizorhapis
+Frederiksenia
+Porphyrobacter
+SAR92 clade
+Confluentimicrobium
+Bernardetia
+Sulfurovum
+Spirulina DRTO-55.2
+Ichthyenterobacterium
+Piscinibacter
+Defluviicoccus
+Asanoa
+Myroides
+Geothermobacter
+Anaerocolumna
+Marimicrobium
+Arenimonas
+Herbiconiux
+Pseudohongiella
+Luteivirga
+Marinicella
+Shewanella
+Mesorhizobium
+Comamonas
+Fulvitalea
+Anaerolineaceae UCG-001
+GKS98 freshwater group
+Coriobacteriaceae UCG-002
+Microvirga
+Marinomonas
+Pseudolabrys
+Aeromicrobium
+Nakamurella
+Rivularia PCC-7116
+MSB-1D1
+Hyphococcus
+Sediminibacterium
+Hymenobacter
+Clostridium sensu stricto 13
+Aliiglaciecola
+Paramaledivibacter
+[Eubacterium] tenue group
+Ferruginibacter
+Novosphingobium
+Euryhalocaulis
+Luteimonas
+Costertonia
+Candidatus Thiobios
+Carboxylicivirga
+Chelatococcus
+Epibacterium
+Desulfosarcina
+Cohaesibacter
+Candidatus Actinomarina
+Henriciella
+Maritalea
+Janibacter
+Bacteroides
+Ahrensia
+Variovorax
+Oceanicaulis
+Tateyamaria
+Lysinibacillus
+Microlunatus
+Sulfurimonas
+Ignatzschineria
+Epulopiscium
+Oceanobacterium
+Robiginitomaculum
+Palleronia-Pseudomaribius
+Marinovum
+FS142-36B-02
+Tropicimonas
+Mesoflavibacter
+Thiohalobacter
+Sagittula
+Puia
+Proteiniphilum
+Algivirga
+Pleionea
+[Anaerorhabdus] furcosa group
+Planomicrobium
+Polaribacter
+Roseburia
+Nocardiopsis
+Anaerolinea
+Luteitalea
+Dysgonomonas
+Methylotenera
+Burkholderia-Caballeronia-Paraburkholderia
+Aeromonas
+Sediminimonas
+Spirulina P7
+Chthoniobacter
+Faecalibacterium
+Mycobacterium
+Cryomorpha
+Haliangium
+Eilatimonas
+Formosa
+[Desulfobacterium] catecholicum group
+Globicatella
+Aerococcus
+Gemmatimonas
+Phenylobacterium
+Marinobacterium
+Lentilitoribacter
+Luminiphilus
+Galbitalea
+Pseudoclavibacter
+Boseongicola
+Roseobacter
+Tropicibacter
+Vulcaniibacterium
+Pelagibius
+Enterovibrio
+Schlegelella
+Dialister
+Granulicoccus
+Gramella
+Leisingera
+Cellulosilyticum
+Rikenella
+Bilophila
+Dorea
+Marmoricola
+Desulfobacterium
+Faucicola
+Friedmanniella
+Rapidithrix
+Wenxinia
+Apibacter
+Aerosphaera
+Acidiphilium
+Lelliottia
+Candidatus Omnitrophus
+Sinobacterium
+Marivita
+Thiothrix
+Alkalinema CENA528
+Parasphingopyxis
+Methyloceanibacter
+Skermanella
+Enterobacter
+Fimbriiglobus
+Roseibium
+Desulfopila
+F0332
+Parafilimonas
+Ascidiaceihabitans
+Albirhodobacter
+Candidatus Allobeggiatoa
+Aliagarivorans
+Candidatus Scalindua
+Serratia
+Aliikangiella
+Labilibacter
+Algisphaera
+Endothiovibrio
+Zooshikella
+Croceitalea
+Pararhodospirillum
+Pseudobacteriovorax
+Ponticoccus
+Hoppeia
+Haloferula
+Candidatus Alysiosphaera
+Roseibacterium
+Herminiimonas
+Sungkyunkwania
+Microcella
+Cyanobium PCC-6307
+Catenovulum
+Tabrizicola
+Plastorhodobacter
+Curtobacterium
+Vogesella
+Rikenellaceae RC9 gut group
+Flexithrix
+Jannaschia
+Thalassobius
+Donghicola
+Pontivivens
+Cenarchaeum
+Candidatus Tenderia
+IheB3-7
+AqS1
+Erysipelotrichaceae UCG-003
+KCM-B-112
+Phaeocystidibacter
+Aliiroseovarius
+Arsenicitalea
+Sandaracinus
+AKYG587
+Pelagimonas
+Rhodothalassium
+Imperialibacter
+Blastococcus
+CL500-29 marine group
+Psychrilyobacter
+Microscilla
+Terasakiella
+Ectothiorhodosinus
+Draconibacterium
+Sphingobacterium
+[Eubacterium] nodatum group
+Alteromonas
+Coprococcus
+Roseitalea
+Yoonia-Loktanella
+Nitrospira
+Desulfovibrio
+Dellaglioa
+Subdoligranulum
+Pedobacter
+Candidatus Bacilloplasma
+oc32
+Pajaroellobacter
+Campylobacter
+[Clostridium] innocuum group
+Thermus
+Legionella
+Spongiibacter
+Halarcobacter
+Roseobacter clade NAC11-7 lineage
+Odoribacter
+Erwinia
+Candidatus Photodesmus
+Lachnoanaerobaculum
+Candidatus Trichorickettsia
+Verrucomicrobium
+Neiella
+Maribius
+Koukoulia
+Pseudodonghicola
+Litorilituus
+Pseudopelagicola
+Lutimaribacter
+Aestuariicoccus
+Conservatibacter
+Nitrobacter
