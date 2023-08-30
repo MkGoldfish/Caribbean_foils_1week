@@ -25,24 +25,15 @@ setwd("C:/Users/mgoudriaan/Documents/R-files/Projects/NIOZ140-foils/R-project-fi
 ####                   Load libraries                                                      ####
 ###%#_______________________________________________________________________________________#%###
 library(devtools)
-library(phyloseq)
-library(grid)
 library(tidyverse)
 library(vegan)
-library(knitr)
-library("microbiome")
 library(compositions)
 library(ggforce)
-library(ggdist)
-library(gghalves)
-library(ggrepel)
 library(scales)
-library("mirlyn")
 library("remotes")
 library("GGally")
-library("pheatmap")
-library("viridis")
 library(cowplot)
+
 
 ###%#_______________________________________________________________________________________#%###
 ####                  Import Data &                    
@@ -383,11 +374,13 @@ simper.diffsum.xp.symb <- simper.diffsum.xp %>% mutate(species = if_else(
   if_else(species %in% pdb, paste("#", sep = "_", species),
           if_else(species %in% hcb, paste("+", sep = "_", species), species))))
 
+viridis <- c("#fde725", "#b5de2b", "#6ece58", "#35b779", "#1f9e89", "#26828e", "#31688e", "#3e4989", "#482878")
+
 Heatmap <- ggplot(simper.diffsum.xp.symb, # plot expanded df
                   aes(y=fct_reorder(species,cusum), x = test, fill = cusum )) + #pick values to plot, in this case species vs test, and average dissimilarity as fill. 
   geom_tile(colour = "grey30") + #color of tile borders
   geom_text(aes(label = (contribution *100) %>% round(1)), color = "black", size = 6, fontface = 'bold') + #geom text, the amount of digits
-  scale_fill_gradientn(name  = "Contribution x 100%",  colours = rev(viridis(20, option = "plasma")), limits = c(0,0.4), na.value ="#bbbbbb") + #set-up gradient, in this case magma from viridis package
+  scale_fill_gradientn(name  = "Contribution %",  colours = viridis, limits = c(0,0.301), na.value ="#bbbbbb", labels = scales::percent) + #set-up gradient, in this case magma from viridis package
   theme_classic() +
   scale_x_discrete(limits = c( "Ungrouped", "day1.day6"  , "UV.day1.day6" ,"noUV.day1.day6", "Carbon.day1.day6", "Hetero.day1.day6",   
                                     "Carbon.Hetero", "Nylon.PE", "PE.PET", "PP.PET", "PS.PE", "PS.PP", 
