@@ -121,23 +121,45 @@ pdb.gen.filt <-gen.in.pdb %>% mutate(Polymer = if_else(str_detect(Plastic, "PET"
                                                                             (if_else(str_detect(Plastic, "PE"), "PE", 
                                                                               (if_else(str_detect(Plastic, "Nylon"), "Nylon", 
                                                                             "Other"))))))))))))
+
 PE <- pdb.gen.filt %>% filter(Polymer == "PE") %>% pull(Genus) %>% unique()
 PP <- pdb.gen.filt %>% filter(Polymer == "PP") %>% pull(Genus) %>% unique()
 PS <- pdb.gen.filt %>% filter(Polymer == "PS") %>% pull(Genus) %>% unique()
 PET <- pdb.gen.filt %>% filter(Polymer == "PET") %>% pull(Genus) %>% unique()
 Nylon <- pdb.gen.filt %>% filter(Polymer == "Nylon") %>% pull(Genus) %>% unique()
 
+
+pdb.gen.filt <-gen.in.pdb %>% mutate(Polymer = if_else(str_detect(Plastic, "PET"), "PET",
+                                                       (if_else(str_detect(Plastic, "PS"), "PS", 
+                                                                (if_else(str_detect(Plastic, "PP"), "PP", 
+                                                                         (if_else(Plastic %in% c("PEA", "PEC", "PEF", "PEG", "PES","PESU" ), "Other", 
+                                                                                  (if_else(str_detect(Plastic, "PE"), "PE", 
+                                                                                           (if_else(str_detect(Plastic, "Nylon"), "Nylon", 
+                                                                                                    "Other"))))))))))))
+
+
+
+# Add the info on which polymer category the genera are found in plasticDB
+Gen.PDB.filt_plasts <- Genus_plastic %>% filter(Genus_rep_rel_abund > 0)  %>% mutate(Genus.pol = 
+                                             if_else(Genus %in% PE, paste(Genus, "I", sep = " "), Genus)) 
+
+Gen.PDB.filt_plasts <- Gen.PDB.filt_plasts  %>% mutate(Genus.pol =                                                 
+                                                    if_else(Genus %in% PP, paste(Genus.pol, "II", sep = " "),
+                                                            if_else(Genus %in% PS, paste(Genus.pol, "III", sep = " "),
+                                                                    if_else(Genus %in% PET, paste(Genus.pol, "IV", sep = " "),
+                                                                            if_else(Genus %in% Nylon, paste(Genus.pol, "V", sep = " "),
+                                                                                    Genus.pol)))))
 # Put genera in alphabetcial order
-pdb.gen.filt$Genus <- factor(pdb.gen.filt$Genus, levels=rev(sort(unique(pdb.gen.filt$Genus))))
+Gen.PDB.filt_plasts$Genus.pol <- factor(Gen.PDB.filt_plasts$Genus.pol, levels=rev(sort(unique(Gen.PDB.filt_plasts$Genus.pol))))
 
 # set colors and shape
-shapes = c(15,19,8,17,18,4)
+shapes = c(15,19,8,17,18)
 
 #### Plot genera from our dataset present in plasticDB, and the polymers upon which they are found in plasticDB ####
-plot.pdb <- ggplot(pdb.gen.filt, aes(x = Polymer, y = Genus)) +
-  geom_point(aes(shape = Polymer), size = 3) +
-   scale_shape_manual(values = shapes, limits = c("PE", "PP", "PS", "PET", "Nylon", "Other")) +
-  scale_x_discrete(limits = c("PE", "PP", "PS", "PET", "Nylon", "Other")) +
+plot.pdb <- ggplot(Gen.PDB.filt_plasts, aes(x = Material, y = Genus.pol)) +
+  geom_point(aes(shape = Material), size = 3) +
+   scale_shape_manual(values = shapes, limits = c("PE", "PP", "PS", "PET", "Nylon"), name = "Polymer") +
+  scale_x_discrete(limits = c("PE", "PP", "PS", "PET", "Nylon")) +
   theme_pubclean() +
   theme(
     axis.text.x=element_text(size = 11, angle = 60, hjust = 0.9), 

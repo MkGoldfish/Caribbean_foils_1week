@@ -39,17 +39,16 @@ library(grid)
 library(tidyverse)
 library(vegan)
 library(compositions)
-library(knitr)
-library(gghalves)
-library(ggrepel)
 library("remotes")
 library("ggh4x")
 library(ggpubr)
+library(ggrepel)
 library("plotrix")
 library("FactoMineR")
 library("factoextra")
 library(usedist)
 library("ggthemes")
+library(cowplot)
 
 
 ####_______________________________________________________________________________________#%###
@@ -74,65 +73,42 @@ t2 <- t2 %>% mutate( timepoint = case_when(
 ###_______________________________________________________________________________________#%###
 ####  Colors!!                                                                  ####
 ####_______________________________________________________________________________________#%###
-
-colors_by_Maaike <- c("#004e64", "#ecc8af", "#F2AF29", "#436436", "#00a5cf", 
-                               "#c18c5d", "#5f0f40", "#DC602E", "#495867", "#A29F15", 
-                               "#570000", "#FFF5B2", "#20221B", "#9fffcb", "#c08497",
-                               "#8D6346", "#FF4B3E", "#149911", "#472d30", "#ce796b",
-                               "#25a18e", "#BC412B", "#95D9DA", "#B10F2E", "#0E273C",
-                               "#E3FDD8", "#353535", "#e7ad99", "#0F8B8D", "#7ae582",
-                               "#F2AF29", "#606c38", "#3d405b", "#94d2bd", "#772e25",
-                               "#344e41", "#0047E0", "#6c584c", "#5f0f40", "#D7F171", 
-                               "#c89f9c", "#339989", "#faf3dd", "#04724d", "#98B9AB",
-                               "#b09e99", "#AD343E", "#F2AF29", "#362C28", "#5171A5",
-                               "#F7FE72", "#F4978E", "#7A9B76", "#8A7E72", "#143642", 
-                               "#662C91")
-                               
-colors_M1 <- c("#004e64", "#ecc8af", "#F2AF29", "#436436", "#00a5cf", 
-                        "#c18c5d", "#5f0f40", "#DC602E", "#495867", "#A29F15", 
-                        "#570000", "#FFF5B2", "#20221B", "#9fffcb", "#c08497", 
-                        "#8D6346", "#FF4B3E", "#149911", "#472d30")
-
-
-colors_M2 <- c( "#ce796b", 
-                         "#25a18e", "#BC412B", "#95D9DA", "#B10F2E", "#0E273C",
-                         "#E3FDD8", "#353535", "#e7ad99", "#0F8B8D", "#7ae582",
-                         "#F2AF29", "#606c38", "#3d405b", "#94d2bd", "#772e25",
-                         "#344e41", "#0047E0", "#6c584c", "#5f0f40", "#D7F171", "#c89f9c" )
-                        
-                         
-colors_M3 <- c(   "#339989", "#faf3dd", "#04724d", "#98B9AB",
-                 "#b09e99", "#AD343E", "#F2AF29", "#362C28", "#5171A5",
-                                                   "#F7FE72", "#F4978E", "#7A9B76", "#8A7E72", "#143642", 
-                                                    "#662C91")
+# 
+# colors_by_Maaike <- c("#004e64", "#ecc8af", "#F2AF29", "#436436", "#00a5cf", 
+#                                "#c18c5d", "#5f0f40", "#DC602E", "#495867", "#A29F15", 
+#                                "#570000", "#FFF5B2", "#20221B", "#9fffcb", "#c08497",
+#                                "#8D6346", "#FF4B3E", "#149911", "#472d30", "#ce796b",
+#                                "#25a18e", "#BC412B", "#95D9DA", "#B10F2E", "#0E273C",
+#                                "#E3FDD8", "#353535", "#e7ad99", "#0F8B8D", "#7ae582",
+#                                "#F2AF29", "#606c38", "#3d405b", "#94d2bd", "#772e25",
+#                                "#344e41", "#0047E0", "#6c584c", "#5f0f40", "#D7F171", 
+#                                "#c89f9c", "#339989", "#faf3dd", "#04724d", "#98B9AB",
+#                                "#b09e99", "#AD343E", "#F2AF29", "#362C28", "#5171A5",
+#                                "#F7FE72", "#F4978E", "#7A9B76", "#8A7E72", "#143642", 
+#                                "#662C91")
+#                                
+# colors_M1 <- c("#004e64", "#ecc8af", "#F2AF29", "#436436", "#00a5cf", 
+#                         "#c18c5d", "#5f0f40", "#DC602E", "#495867", "#A29F15", 
+#                         "#570000", "#FFF5B2", "#20221B", "#9fffcb", "#c08497", 
+#                         "#8D6346", "#FF4B3E", "#149911", "#472d30")
+# 
+# 
+# colors_M2 <- c( "#ce796b", 
+#                          "#25a18e", "#BC412B", "#95D9DA", "#B10F2E", "#0E273C",
+#                          "#E3FDD8", "#353535", "#e7ad99", "#0F8B8D", "#7ae582",
+#                          "#F2AF29", "#606c38", "#3d405b", "#94d2bd", "#772e25",
+#                          "#344e41", "#0047E0", "#6c584c", "#5f0f40", "#D7F171", "#c89f9c" )
+#                         
+#                          
+# colors_M3 <- c(   "#339989", "#faf3dd", "#04724d", "#98B9AB",
+#                  "#b09e99", "#AD343E", "#F2AF29", "#362C28", "#5171A5",
+#                                                    "#F7FE72", "#F4978E", "#7A9B76", "#8A7E72", "#143642", 
+#                                                     "#662C91")
                  
 pal_isme <- c("#006d77", "#ffddd2", "#00C49A", "#e29578", "#83c5be")
 Pal.plast <- c("#DDCC77","#117733", "#AA4499", "#88CCEE", "#332288" )
 pal.time <- c("#44AA99", "#882255")
 pal.uv <- c("#999933", "#CC6677")
-
-HCB.col <- c("#EE7733")
-PDB.col <- c("#0077BB")
-pal_roy <- wes_palette("Royal1")
-                                                    
-# pal_darj1 <- wes_palette("Darjeeling1")
-# pal_darj2 <- wes_palette("Darjeeling2")
-# pal_darj3 <- wes_palette("Darjeeling1", 10, type = "continuous")
-# pal_moon <- wes_palette("Moonrise3")
-
-# pal_rush <- wes_palette("Rushmore1")
-# pal_cav <- wes_palette("Cavalcanti1")
-# pal_chev <- wes_palette("Chevalier1")
-# pal_dog <- wes_palette("IsleofDogs1")
-# shiraz <-islamic_pal(palette = "shiraz")
-# pal_shir5 <-shiraz(5)
-# pal_shir12 <-shiraz(12)
-# fes <-islamic_pal(palette = "fes")
-# pal_fes <- fes(8)
-# samq <- islamic_pal(palette = "samarqand")
-# pal_samq <-samq(12)
-# alham <- islamic_pal(palette = "alhambra")
-# pal_alh <-alham(6)
 
 #### Extra columns
 time_UV <- str_c(t2$timepoint, "_", t2$treatment)
@@ -150,8 +126,6 @@ t2 <- t2 %>%
 t2 <- t2 %>% filter(timepoint != "T3")
 head(t2)
 
-
-
 ##############################################################################################
 ###%#______________________________________________________________________________________#%###
 ####                NMDS based on previously calculated relative abundance data                 
@@ -159,7 +133,6 @@ head(t2)
 ASV.RA.metadata <- t2 %>% select(Sample, Description, timepoint, Material, treatment, surface, time_UV) %>% 
   distinct()  %>% arrange(Sample) %>% column_to_rownames(var = "Sample")
 head(ASV.RA.metadata)
-
 
 # Extract RA data from tidy tibble 
 # Filter out all Abundance = 0 values, since this fucks up the standardization
@@ -173,16 +146,13 @@ ASV.RA.count.t <- ASV.RA.count %>% select(Sample, OTU, Sample_rel_abund)  %>% mu
   pivot_wider(names_from = OTU, values_from = Sample_rel_abund) %>% replace(is.na(.), 0)  %>% arrange(Sample) %>% 
   column_to_rownames(var = "Sample") %>% as.data.frame() %>% sqrt()
 
-
-
-
 # No additional data transformation needed
 # Perform ordinations on transformed data
 # We use Bray-Curtis distance in 2 dimensions (k=2)
 # Autotransfrom = False to have control over transformations
 # See above. When sample=rows and ASV=columns, we can use standard MARGINS
 # Otherwise check the different ordination methods to 
-ASV.RA.Bray <- metaMDS(ASV.RA.count.t , k = 2, autotransform = F, trymax = 999)
+ASV.RA.Bray <- metaMDS(ASV.RA.count.t , k = 3, autotransform = F, trymax = 999)
 
 ASV.RA.Bray
  
@@ -366,18 +336,18 @@ nmds_plot_ASV+
 ####______________________________________________________________________________________#%###
 ASV <- t2  %>%  select(Sample, timepoint, Material, treatment, surface, Sample, time_UV, treat_time, time_mat, OTU, Sample_rel_abund)%>% 
   distinct() 
-ASV <- ASV %>% filter( timepoint %in% c("T1", "T6")) #%>% mutate(timepoint = ifelse(Material =="negative_c", "T1", timepoint))
+ASV <- ASV %>% filter( timepoint %in% c("Day 1", "Day 6")) #%>% mutate(timepoint = ifelse(Material =="negative_c", "T1", timepoint))
+unique(ASV$timepoint)
 
-RA.T1 <- ASV %>% filter(timepoint == "T1") %>% select(Sample, OTU, Sample_rel_abund) %>% 
+RA.T1 <- ASV %>% filter(timepoint == "Day 1") %>% select(Sample, OTU, Sample_rel_abund) %>% 
   filter (Sample_rel_abund > 0) %>%   distinct() 
-
 
 RA.T1<- RA.T1 %>% select(Sample, OTU, Sample_rel_abund) %>% 
   pivot_wider(names_from = OTU, values_from = Sample_rel_abund) %>% replace(is.na(.), 0)  %>% 
   column_to_rownames(var = "Sample") %>% as.data.frame() %>% sqrt()
 
 
-RA.T6 <-  ASV %>% filter(timepoint == "T6") %>% select(Sample, OTU, Sample_rel_abund) %>% 
+RA.T6 <-  ASV %>% filter(timepoint == "Day 6") %>% select(Sample, OTU, Sample_rel_abund) %>% 
   filter (Sample_rel_abund > 0) %>%   distinct() 
 
 
@@ -387,8 +357,8 @@ RA.T6<- RA.T6 %>% select(Sample, OTU, Sample_rel_abund) %>%
 head(RA.T6)
 
 #Subset metadata per habitat
-T1.metadata <- ASV.RA.metadata %>% filter(timepoint == "T1")
-T6.metadata <- ASV.RA.metadata %>% filter(timepoint == "T6")
+T1.metadata <- ASV.RA.metadata %>% filter(timepoint == "Day 1")
+T6.metadata <- ASV.RA.metadata %>% filter(timepoint == "Day 6")
 
 ###%#_______________________________________________________________________________________#%###
 ####                      Plotting ordination T1              ####
@@ -439,9 +409,9 @@ nmds_plot_ASV
 
 ## Create NMDS ordination plot
 #POL:ISHED ONE
-nmds_plot_ASV = 
+nmds_plot_T1_pols = 
   # Create axis based on both NMDS values in 2 dimensions
-  ggplot(data.scores, aes(x = NMDS2, y = NMDS3)) +  
+  ggplot(data.scores, aes(x = NMDS1, y = NMDS2)) +  
   #Plot the points of the NMDS, select what you want as shape and color from metadata
   geom_point(size = 6, aes(shape = treatment, fill = Material, stroke = 1))+ # chose here what is shapes amd colors
   geom_text_repel(aes(label= Material), size = 4, max.overlaps = 25) +
@@ -454,12 +424,12 @@ nmds_plot_ASV =
         axis.title.y = element_text(face = "bold", size = 11),
         axis.title.x = element_text(face = "bold", size = 11, colour = "black"),
         legend.title = element_text(size = 11, colour = "black", face = "bold"),
-        panel.background = element_blank(), panel.border = element_rect(colour = "black", fill = NA, size = 1.2),
+        panel.background = element_blank(), panel.border = element_rect(colour = "black", fill = NA, linewidth = 1.2),
         legend.key=element_blank(),
         plot.title = element_text(size = 12, face = "bold", hjust = 0.5, vjust = 1)) +
   labs( title = "nMDS of sqrt of RA data of sample on T1 based on Bray-Curtis distances")  + 
   stat_ellipse(type = "t" , level = 0.5,
-               geom = "path", size = 1.2,
+               geom = "path", linewidth = 1.2,
                aes(color = Material,  #Set color condition for elipses
                    alpha = 0.85)) +
   scale_linetype_manual( name = "Ellipse groups", values =  c(1,4,1,4)) +
@@ -468,7 +438,7 @@ nmds_plot_ASV =
   scale_color_manual(values = Pal.plast) +
   guides(fill = guide_legend(override.aes = list( shape = 22, linetype = NULL)),
          shape = guide_legend(override.aes = list(fill = "black")),
-         alpha = F)
+         alpha = "none")
 
 nmds_plot_ASV
 
@@ -592,12 +562,12 @@ nmds_plot_ASV
 # Maybe add elipses
 
 
-nmds_plot_ASV = 
+nmds_plot_T6_plast = 
   # Create axis based on both NMDS values in 2 dimensions
-  ggplot(data.scores, aes(x = NMDS2, y = NMDS3)) +  
+  ggplot(data.scores, aes(x = NMDS1, y = NMDS2)) +  
   #Plot the points of the NMDS, select what you want as shape and color from metadata
-  geom_point(size = 6, aes(shape = Material, fill = treatment, stroke = 1))+   #<-- choose variable for shape and fill
-  geom_text_repel(aes(label= treatment), size = 4, max.overlaps = 25) +
+  geom_point(size = 6, aes(shape =treatment, fill = Material, stroke = 1))+   #<-- choose variable for shape and fill
+  geom_text_repel(aes(label= Material), size = 4, max.overlaps = 25) +
   annotate("text", x = -0.9, y = 1.2, label = paste0("k=3; stress= ", format(nMDS.stress, digits = 4)), hjust = 0, size = 4) +
   theme_pubr() +
   theme(axis.text.y = element_text(colour = "black", size = 10),
@@ -613,17 +583,45 @@ nmds_plot_ASV =
   labs( title = "nMDS sqrt of RA data of sample on T6 based on Bray-Curtis distances")  + 
   stat_ellipse(type = "t" , level = 0.5,
                geom = "path", size = 1.2,
-               aes(color = treatment,       #<-- what variable do you want to use for the ellipses
+               aes(color = Material,       #<-- what variable do you want to use for the ellipses
                    alpha = 0.85)) +
   scale_linetype_manual( name = "Ellipse groups", values =  c(1,4,1,4)) +
   scale_shape_manual(values = c(22,21,23,24,25)) +
-  scale_fill_manual(values = pal.uv) +       #<-- Pick color palette
-  scale_color_manual(values = pal.uv) +    
+  scale_fill_manual(values = Pal.plast) +       #<-- Pick color palette
+  scale_color_manual(values = Pal.plast) +    
   guides(fill = guide_legend(override.aes = list( shape = 22, linetype = NULL)),
          shape = guide_legend( override.aes = list(fill = "black")),
          alpha = F)
 
 nmds_plot_ASV
+
+#### Plot Grid -----
+legend.a <- get_legend(nmds_plot_T1_UV+
+                         theme(legend.direction = "vertical",
+                               legend.title.align = 0.5))
+
+legend.b <- get_legend(nmds_plot_T1_pols+
+                         theme(legend.direction = "vertical",
+                               legend.title.align = 0.5))
+
+
+
+plot_grid(nmds_plot_T1_UV + theme(legend.position ="none", plot.title = element_blank()),
+          legend.a,
+          nmds_plot_T6_UV + theme(legend.position ="none", plot.title = element_blank()),
+          nmds_plot_T1_pols + theme(legend.position ="none", plot.title = element_blank()),
+          legend.b,
+          nmds_plot_T6_plast + theme(legend.position ="none", plot.title = element_blank()),
+          labels = c("A", "", "B", "D", "", "E" ), 
+          ncol = 3,
+          nrow = 2,
+          align = 'v',
+          axis = "l",
+          rel_heights = c(1,1),
+          rel_widths = c(1,0.2,1))
+
+
+
 
 ###_________Create Ellipses_____________________________________________________________###
 # Generic function for ellipses
