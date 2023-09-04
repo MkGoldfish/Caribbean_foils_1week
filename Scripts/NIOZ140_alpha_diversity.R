@@ -9,16 +9,16 @@
 #                                                          #
 ####           Project: foils statia NIOZ 140           ####
 ####            Adapted by Maaike April 2022            ####
-####              (this is the right one)               ####
+###%#                                                  #%###
 ####               Corrected Primers                    ####
 #                                                          #
 ##%######################################################%##
-############################################################
+##%########################################################%##
 ##  version.string R version 4.2.1 (2022-06-23 ucrt)
 ##  nickname       Funny-Looking Kid   
 
 
-##%######################################################%##
+###%####################################################%###
 #                                                          #
 ####                      Alpha Diversity              ####
 #                                                          #
@@ -40,11 +40,9 @@ library(grid)
 library(tidyverse)
 library(vegan)
 library(compositions)
-library(knitr)
 library(gghalves)
 library(ggrepel)
 library(microbiome)
-library("mirlyn")
 library("remotes")
 library("ggh4x")
 library(ggpubr)
@@ -110,19 +108,10 @@ min(sample_sums(physeq_object)) #534
 
 physeq_object_MinSamp90 = physeq_object
 
-# plot_bar(physeq_object, "Samplename", "Abundance", "OTU")
-
-# physeq_object <-  subset_samples(physeq_object,(sample_sums(physeq_object) >= 1000))
-# max(sample_sums(physeq_object))
-# ntaxa(physeq_object)
-# nsamples(physeq_object)
-
 #####subset T3 & merge ####         ### No longer in map file
 sub1<- subset_samples(physeq_object, timepoint %in% c("Day 1", "Day 6"))
 sub2 <- subset_samples(physeq_object, surface!="negative_c") 
 physeq_object <- merge_phyloseq(sub1, sub2)
-
-
 
 summarize_phyloseq(physeq_object)
 nsamples(physeq_object)
@@ -137,40 +126,6 @@ physeq_object_Min90T3 = physeq_object
 
 ####_Colors!!______________________________________________________________________________####
 # Different colorpallettes to choose from
-colors_by_Maaike <- c("#004e64", "#ecc8af", "#F2AF29", "#436436", "#00a5cf", 
-                      "#c18c5d", "#5f0f40", "#DC602E", "#495867", "#A29F15", 
-                      "#570000", "#FFF5B2", "#20221B", "#9fffcb", "#c08497",
-                      "#8D6346", "#FF4B3E", "#149911", "#472d30", "#ce796b",
-                      "#25a18e", "#BC412B", "#95D9DA", "#B10F2E", "#0E273C",
-                      "#E3FDD8", "#353535", "#e7ad99", "#0F8B8D", "#7ae582",
-                      "#F2AF29", "#606c38", "#3d405b", "#94d2bd", "#772e25",
-                      "#344e41", "#0047E0", "#6c584c", "#5f0f40", "#D7F171", 
-                      "#c89f9c", "#339989", "#faf3dd", "#04724d", "#98B9AB",
-                      "#b09e99", "#AD343E", "#F2AF29", "#362C28", "#5171A5",
-                      "#F7FE72", "#F4978E", "#7A9B76", "#8A7E72", "#143642", 
-                      "#662C91")
-
-colors_M1 <- c("#004e64", "#ecc8af", "#F2AF29", "#436436", "#00a5cf", 
-               "#c18c5d", "#5f0f40", "#DC602E", "#495867", "#A29F15", 
-               "#570000", "#FFF5B2", "#20221B", "#9fffcb", "#c08497", 
-               "#8D6346", "#FF4B3E", "#149911", "#472d30")
-
-swatch(colors_M1)
-
-colors_M2 <- c( "#ce796b", 
-                "#25a18e", "#BC412B", "#95D9DA", "#B10F2E", "#0E273C",
-                "#E3FDD8", "#353535", "#e7ad99", "#0F8B8D", "#7ae582",
-                "#F2AF29", "#606c38", "#3d405b", "#94d2bd", "#772e25",
-                "#344e41", "#0047E0", "#6c584c", "#5f0f40", "#D7F171", "#c89f9c" )
-swatch(colors_M2)
-
-colors_M3 <- c(   "#339989", "#faf3dd", "#04724d", "#98B9AB",
-                  "#b09e99", "#AD343E", "#F2AF29", "#362C28", "#5171A5",
-                  "#F7FE72", "#F4978E", "#7A9B76", "#8A7E72", "#143642", 
-                  "#662C91")
-
-
-
 pal_isme <- c("#006d77", "#ffddd2", "#00C49A", "#e29578", "#83c5be")
 Pal.plast <- c("#DDCC77","#117733", "#AA4499", "#88CCEE", "#332288" )
 pal.time <- c("#44AA99", "#882255")
@@ -178,60 +133,6 @@ pal.uv <- c("#999933", "#CC6677")
 
 HCB.col <- c("#EE7733")
 PDB.col <- c("#0077BB")
-
-# pal50 <- createPalette(60, c("#FF0000", "#00FF00", "#0000FF"), range = c(50, 999))
-# names(pal50) <- NULL
-
-
-############################################################################################%###
-####_______________________________________________________________________________________#%###
-####            Prevalence plots      ####
-####_______________________________________________________________________________________#%###
-Prevalence <- read_pptx()
-Prevalence <- read_pptx("../Reports/Prevalence_OpenBio_Prokaryotes.pptx")
-
-# Prevalence on all samples on different taxonomic levels
-Prevalence_plot <- microbiome::plot_taxa_prevalence(physeq_object, "Order") + theme(legend.position = "none") + ylab("Prevalence") + labs(title = "Prevalence Openbio Eukaryotic Order") #prevalence
-Prevalence_plot
-
-# Prevalence per habitat on different taxonomic levels
-Prevalence_plot <- microbiome::plot_taxa_prevalence(physeq_Pelagic, "Phylum") + theme(legend.position = "none") + ylab("Prevalence") + labs(title = "Prevalence Pelagic Eukaryotic Phylum") #prevalence
-Prevalence_plot
-
-Prevalence_plot <- microbiome::plot_taxa_prevalence(physeq_Pelagic, "Order") + theme(legend.position = "none") + ylab("Prevalence") + labs(title = "Prevalence Pelagic Eukaryotic Order") #prevalence
-Prevalence_plot
-
-Prevalence_plot <- microbiome::plot_taxa_prevalence(physeq_Benthic, "Phylum") + theme(legend.position = "none") + ylab("Prevalence") + labs(title = "Prevalence Benthic Eukaryotic Phylum") #prevalence
-Prevalence_plot
-
-Prevalence_plot <- microbiome::plot_taxa_prevalence(physeq_Benthic, "Order") + theme(legend.position = "none") + ylab("Prevalence") + labs(title = "Prevalence Benthic Eukaryotic Order") #prevalence
-Prevalence_plot
-
-
-# Prevalence per Polymer on different taxonomic levels
-Prevalence_plot <- microbiome::plot_taxa_prevalence(physeq_LDPE, "Phylum") + theme(legend.position = "none") + ylab("Prevalence") + labs(title = "Prevalence LDPE Eukaryotic Phylum") #prevalence
-Prevalence_plot
-
-Prevalence_plot <- microbiome::plot_taxa_prevalence(physeq_LDPE, "Order") + theme(legend.position = "none") + ylab("Prevalence") + labs(title = "Prevalence LDPE Eukaryotic Order") #prevalence
-Prevalence_plot
-
-Prevalence_plot <- microbiome::plot_taxa_prevalence(physeq_PBSeT, "Phylum") + theme(legend.position = "none") + ylab("Prevalence") + labs(title = "Prevalence PBSET Eukaryotic Phylum") #prevalence
-Prevalence_plot
-
-Prevalence_plot <- microbiome::plot_taxa_prevalence(physeq_PBSeT, "Order") + theme(legend.position = "none") + ylab("Prevalence") + labs(title = "Prevalence PBSET Eukaryotic Order") #prevalence
-Prevalence_plot
-
-Prevalence_plot <- microbiome::plot_taxa_prevalence(physeq_PHB, "Phylum") + theme(legend.position = "none") + ylab("Prevalence") + labs(title = "Prevalence PHB Eukaryotic Phylum") #prevalence
-Prevalence_plot
-
-Prevalence_plot <- microbiome::plot_taxa_prevalence(physeq_PHB, "Order") + theme(legend.position = "none") + ylab("Prevalence") + labs(title = "Prevalence PHB Eukaryotic Order") #prevalence
-Prevalence_plot
-
-
-editable_graph <- dml(ggobj = Prevalence_plot)
-Prevalence <- add_slide(Prevalence) 
-Prevalence <- ph_with(x = Prevalence, editable_graph,location = ph_location_type(type = "body") )
-print(Prevalence, target = "../Reports/Prevalence_Eukaryotes.pptx")
 
 ############################################################################################%###
 ####_______________________________________________________________________________________#%###
@@ -641,19 +542,16 @@ plot_grid(Chao1 + theme(legend.position ="none"),
 
 
 ####_______________________________________________________________________________________#%###
-####           Raincloud plots for SupInfo to show averages ####
+####           Summary plots for SupInfo to show averages ####
 ####_______________________________________________________________________________________#%###
 Chao1.Foils<- read_pptx()
 Chao1.Foils <- read_pptx("../Reports/Chao1_index_Foils.pptx")
 
 ## Make plot with GGPLOT
-Simpson <- ggplot(Alpha.Foils,          #Pick data to plot
-                     aes(x = treatment, y = Simpson,  fill = treatment)) + #Pick factors to use
-  geom_boxplot(aes(alpha = 0.5), # Make boxplot
-               width = 0.1, outlier.colour = NULL) +
-  geom_half_violin(aes(alpha = 0.5),side = "r", nudge = 0.15, scale = "count") + # Make half-violin
-  geom_half_point(aes(color = treatment),                                       # Chose factor for points
-                  side = 'l', position = position_nudge(x=-0.1), range_scale = 0.3) +
+Chao1 <- ggplot(Alpha.Foils,          #Pick data to plot
+                 aes(x = treatment, y = Chao1,  color = treatment)) + #Pick factors to use
+  geom_boxplot(stat = "boxplot", outlier.colour =  NULL, linewidth = 1) +
+  geom_point( position = "jitter", size = 3, alpha = 0.8) +
   theme_pubclean()+
   theme(axis.text.x=element_text(size = 12, angle = 60, hjust = 1), 
         axis.text.y=element_text(size= 12), 
@@ -668,6 +566,7 @@ Simpson <- ggplot(Alpha.Foils,          #Pick data to plot
         panel.grid.major.x = element_blank()) +
   facet_grid( ~ timepoint) +
   guides(alpha = "none") +
+  xlab("Treatment") +
   scale_colour_manual(values = pal.uv) +
   scale_fill_manual(values = pal.uv) 
 
@@ -683,12 +582,14 @@ plot_grid(Chao1 + theme(legend.position ="none"),
           Simpson + theme(legend.position ="none"),
           Shannon + theme(legend.position ="none"),
           legend.a,
+          labels = c("A", "B", "C"),
           ncol = 4,
           nrow = 1,
           align = 'v',
           axis = "l",
           rel_heights = c(1,1,1,1),
           rel_widths = c(1,1,1,0.2))
+
 
 ##############################################################################################
 ###%#______________________________________________________________________________________#%###
@@ -814,35 +715,4 @@ rareplot.2 <- ggplot(rep.rare.data, aes(x = n_seqs, y = value, color = Descripti
   geom_vline(xintercept = min_seqs_2, linewidth = 1.5) +
   xlim(0, 50000) +
   theme_classic()
-
-###_______________________________________________________________________________________#%###
-####           Rarefaction curves  OLD  ####
-####_______________________________________________________________________________________#%###
-
-ASV.ABS.count <-  t2 %>%  select(Samplename, OTU, Abundance) %>%
-  distinct() 
-head(ASV.ABS.count)
-
-# Transform count table to get samples per row and ASV per column
-# Not per se necessary, but this means we can use standard MARGIN in transfromation and ordination
-ASV.ABS.count <- ASV.ABS.count %>% select(Samplename, OTU, Abundance)  %>% mutate(across(c(OTU),factor)) %>% 
-  pivot_wider(names_from = OTU, values_from = Abundance) %>% replace(is.na(.), 0)  %>% 
-  column_to_rownames(var = "Samplename") %>% as.data.frame()
-head(ASV.ABS.count)
-
-rarecurve(ASV.ABS.count, sample, step = 10) 
-Rarecurve.ASV <- rrarefy(ASV.ABS.count, sample = 9000)
-
-ggplot(data = Rarecurve.ASV) +
-  geom_point(aes(color = Sample)) +
-  theme(legend.position="none")
-
-#Create rarefaction curves
-Rarecurve <- mirlyn::rarefy_whole_rep(physeq_object, rep = 1, steps = 10000)
-
-#Vizualization of rarefaction curve
-ggplot(data = Rarecurve, mapping =  aes(x = LibSize, y = ObsASVCount)) +
-  geom_point(aes(color = Sample)) +
-  theme(legend.position="none")
-
 

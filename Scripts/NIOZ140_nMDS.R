@@ -69,47 +69,6 @@ t2 <- t2 %>% mutate( timepoint = case_when(
 )
 )
 
-###############################################################################################
-###_______________________________________________________________________________________#%###
-####  Colors!!                                                                  ####
-####_______________________________________________________________________________________#%###
-# 
-# colors_by_Maaike <- c("#004e64", "#ecc8af", "#F2AF29", "#436436", "#00a5cf", 
-#                                "#c18c5d", "#5f0f40", "#DC602E", "#495867", "#A29F15", 
-#                                "#570000", "#FFF5B2", "#20221B", "#9fffcb", "#c08497",
-#                                "#8D6346", "#FF4B3E", "#149911", "#472d30", "#ce796b",
-#                                "#25a18e", "#BC412B", "#95D9DA", "#B10F2E", "#0E273C",
-#                                "#E3FDD8", "#353535", "#e7ad99", "#0F8B8D", "#7ae582",
-#                                "#F2AF29", "#606c38", "#3d405b", "#94d2bd", "#772e25",
-#                                "#344e41", "#0047E0", "#6c584c", "#5f0f40", "#D7F171", 
-#                                "#c89f9c", "#339989", "#faf3dd", "#04724d", "#98B9AB",
-#                                "#b09e99", "#AD343E", "#F2AF29", "#362C28", "#5171A5",
-#                                "#F7FE72", "#F4978E", "#7A9B76", "#8A7E72", "#143642", 
-#                                "#662C91")
-#                                
-# colors_M1 <- c("#004e64", "#ecc8af", "#F2AF29", "#436436", "#00a5cf", 
-#                         "#c18c5d", "#5f0f40", "#DC602E", "#495867", "#A29F15", 
-#                         "#570000", "#FFF5B2", "#20221B", "#9fffcb", "#c08497", 
-#                         "#8D6346", "#FF4B3E", "#149911", "#472d30")
-# 
-# 
-# colors_M2 <- c( "#ce796b", 
-#                          "#25a18e", "#BC412B", "#95D9DA", "#B10F2E", "#0E273C",
-#                          "#E3FDD8", "#353535", "#e7ad99", "#0F8B8D", "#7ae582",
-#                          "#F2AF29", "#606c38", "#3d405b", "#94d2bd", "#772e25",
-#                          "#344e41", "#0047E0", "#6c584c", "#5f0f40", "#D7F171", "#c89f9c" )
-#                         
-#                          
-# colors_M3 <- c(   "#339989", "#faf3dd", "#04724d", "#98B9AB",
-#                  "#b09e99", "#AD343E", "#F2AF29", "#362C28", "#5171A5",
-#                                                    "#F7FE72", "#F4978E", "#7A9B76", "#8A7E72", "#143642", 
-#                                                     "#662C91")
-                 
-pal_isme <- c("#006d77", "#ffddd2", "#00C49A", "#e29578", "#83c5be")
-Pal.plast <- c("#DDCC77","#117733", "#AA4499", "#88CCEE", "#332288" )
-pal.time <- c("#44AA99", "#882255")
-pal.uv <- c("#999933", "#CC6677")
-
 #### Extra columns
 time_UV <- str_c(t2$timepoint, "_", t2$treatment)
 t2 <- t2 %>% 
@@ -125,6 +84,14 @@ t2 <- t2 %>%
 
 t2 <- t2 %>% filter(timepoint != "T3")
 head(t2)
+###############################################################################################
+###_______________________________________________________________________________________#%###
+####  Colors!!                                                                  ####
+####_______________________________________________________________________________________#%###
+pal_isme <- c("#006d77", "#ffddd2", "#00C49A", "#e29578", "#83c5be")
+Pal.plast <- c("#DDCC77","#117733", "#AA4499", "#88CCEE", "#332288" )
+pal.time <- c("#44AA99", "#882255")
+pal.uv <- c("#999933", "#CC6677")
 
 ##############################################################################################
 ###%#______________________________________________________________________________________#%###
@@ -159,8 +126,6 @@ ASV.RA.Bray
 # ASV_dist_Bray <-vegdist(ASV.RA.count, method = "bray")
 
 nMDS.stress <- ASV.RA.Bray$stress
-
-
 
 ###_______________________________________________________________________________________#%###
 ####                      Plotting ordinations        ####
@@ -409,12 +374,12 @@ nmds_plot_ASV
 
 ## Create NMDS ordination plot
 #POL:ISHED ONE
-nmds_plot_T1_pols = 
+nmds_plot_T1_UV = 
   # Create axis based on both NMDS values in 2 dimensions
   ggplot(data.scores, aes(x = NMDS1, y = NMDS2)) +  
   #Plot the points of the NMDS, select what you want as shape and color from metadata
-  geom_point(size = 6, aes(shape = treatment, fill = Material, stroke = 1))+ # chose here what is shapes amd colors
-  geom_text_repel(aes(label= Material), size = 4, max.overlaps = 25) +
+  geom_point(size = 6, aes(shape = Material, fill = treatment, stroke = 1))+ # chose here what is shapes amd colors
+  geom_text_repel(aes(label= treatment), size = 4, max.overlaps = 25) +
   annotate("text", x = -1.1, y = 0.65, label = paste0("k=3; stress= ", format(nMDS.stress, digits = 4)), hjust = 0, size = 4) +
   theme_pubr() +
   theme(axis.text.y = element_text(colour = "black", size = 10),
@@ -430,12 +395,12 @@ nmds_plot_T1_pols =
   labs( title = "nMDS of sqrt of RA data of sample on T1 based on Bray-Curtis distances")  + 
   stat_ellipse(type = "t" , level = 0.5,
                geom = "path", linewidth = 1.2,
-               aes(color = Material,  #Set color condition for elipses
+               aes(color = treatment,  #Set color condition for elipses
                    alpha = 0.85)) +
   scale_linetype_manual( name = "Ellipse groups", values =  c(1,4,1,4)) +
   scale_shape_manual(values = c(22,21,23,24,25)) +
-  scale_fill_manual(values =  Pal.plast) + # select color palette, twice
-  scale_color_manual(values = Pal.plast) +
+  scale_fill_manual(values =  pal.uv) + # select color palette, twice
+  scale_color_manual(values = pal.uv) +
   guides(fill = guide_legend(override.aes = list( shape = 22, linetype = NULL)),
          shape = guide_legend(override.aes = list(fill = "black")),
          alpha = "none")
@@ -562,11 +527,11 @@ nmds_plot_ASV
 # Maybe add elipses
 
 
-nmds_plot_T6_plast = 
+nmds_plot_T6_pols = 
   # Create axis based on both NMDS values in 2 dimensions
   ggplot(data.scores, aes(x = NMDS1, y = NMDS2)) +  
   #Plot the points of the NMDS, select what you want as shape and color from metadata
-  geom_point(size = 6, aes(shape =treatment, fill = Material, stroke = 1))+   #<-- choose variable for shape and fill
+  geom_point(size = 6, aes(shape = treatment, fill = Material, stroke = 1))+   #<-- choose variable for shape and fill
   geom_text_repel(aes(label= Material), size = 4, max.overlaps = 25) +
   annotate("text", x = -0.9, y = 1.2, label = paste0("k=3; stress= ", format(nMDS.stress, digits = 4)), hjust = 0, size = 4) +
   theme_pubr() +
@@ -595,30 +560,6 @@ nmds_plot_T6_plast =
 
 nmds_plot_ASV
 
-#### Plot Grid -----
-legend.a <- get_legend(nmds_plot_T1_UV+
-                         theme(legend.direction = "vertical",
-                               legend.title.align = 0.5))
-
-legend.b <- get_legend(nmds_plot_T1_pols+
-                         theme(legend.direction = "vertical",
-                               legend.title.align = 0.5))
-
-
-
-plot_grid(nmds_plot_T1_UV + theme(legend.position ="none", plot.title = element_blank()),
-          legend.a,
-          nmds_plot_T6_UV + theme(legend.position ="none", plot.title = element_blank()),
-          nmds_plot_T1_pols + theme(legend.position ="none", plot.title = element_blank()),
-          legend.b,
-          nmds_plot_T6_plast + theme(legend.position ="none", plot.title = element_blank()),
-          labels = c("A", "", "B", "D", "", "E" ), 
-          ncol = 3,
-          nrow = 2,
-          align = 'v',
-          axis = "l",
-          rel_heights = c(1,1),
-          rel_widths = c(1,0.2,1))
 
 
 
@@ -684,5 +625,30 @@ nmds_plot_ASV +
   ##Choose colorvectors for elipses here
   scale_fill_manual(values = pal_alh)  
 
+
+#### Plot Grid ----------------------------------------------------------------------------------------
+legend.a <- get_legend(nmds_plot_T1_UV+
+                         theme(legend.direction = "vertical",
+                               legend.title.align = 0.5))
+
+legend.b <- get_legend(nmds_plot_T1_pols+
+                         theme(legend.direction = "vertical",
+                               legend.title.align = 0.5))
+
+
+
+plot_grid(nmds_plot_T1_UV + theme(legend.position ="none", plot.title = element_blank()),
+          legend.a,
+          nmds_plot_T6_UV + theme(legend.position ="none", plot.title = element_blank()),
+          nmds_plot_T1_pols + theme(legend.position ="none", plot.title = element_blank()),
+          legend.b,
+          nmds_plot_T6_pols + theme(legend.position ="none", plot.title = element_blank()),
+          labels = c("A", "", "B", "C", "", "D" ), 
+          ncol = 3,
+          nrow = 2,
+          align = 'v',
+          axis = "l",
+          rel_heights = c(1,1),
+          rel_widths = c(1,0.2,1))
 
 
