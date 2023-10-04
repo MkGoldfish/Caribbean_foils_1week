@@ -276,6 +276,13 @@ pdb <- as.character(read_lines("./data/PlasticDB_Prokaryotic_genera.txt"))
 plast.HCB <- read_lines("./data/PlasticDB_HCB_genera.txt")
 Genus <- read.csv2("./../amplicon-analysis_plots_alfa/Analysis/genus.csv")
 
+
+#Set categories for facet plotting
+HCB_only <- setdiff(HCB, PDB)
+PDB_only <- setdiff(PDB, HCB)
+plast.hcb.intersect <- intersect(PDB, HCB)
+
+
 #Combine all data together in one df for plotting
 Diff.Ab.Genus.T1.vs.T6 <- bind_rows(Day1.vs.Day6 = Genus.time, 
                            noUV.treated.polymers.Day1.vs.6 = Genus.noUV.time,
@@ -334,6 +341,7 @@ head(time_tests.top10)
 unique(time_tests.top10$test)
 
 Diff.Ab.Genus.rest <- Diff.Ab.Genus.T1.vs.T6 %>%  filter(!Genus%in%Genus.top10)
+Rest <- unique(Diff.Ab.Genus.rest$Genus)
 
 Diff.Ab.Genus.symb.rest <- Diff.Ab.Genus.rest %>% mutate(Genus = if_else(
   Genus %in% intersect(pdb,hcb), paste(Genus, sep = "  ", "#+"), 
@@ -353,7 +361,7 @@ time_tests.top10$Genus <- factor(time_tests.top10$Genus, levels=rev(sort(unique(
 
 Heatmap.top10 <- ggplot(time_tests.top10, aes(y=Genus, x = test, fill = effect )) +
   geom_tile(color = "grey50")+
-  geom_text(aes(label = round(effect, digits = 2)), color = "black", size = 4) +
+  geom_text(aes(label = ifelse(is.na(effect), "", sprintf("%0.2f", round(effect, digits = 2))) , size = 4)) +
   scale_fill_gradientn(name  = "Effect size", limits = c(-3, 3), colours = c( '#00767B', '#238F9D', '#42A7C6', '#60BCE9', '#9DCCEF',  
                                                                                            '#DEE6E7', '#ECEADA', '#F9D576', '#FFB954', '#FD9A44', 
                                                                                            '#F57634', '#E94C1F', '#D11807'), na.value = "#bbbbbb") +
@@ -388,7 +396,7 @@ time_tests.rest$Genus <- factor(time_tests.rest$Genus, levels=rev(sort(unique(ti
 
 Heatmap.rest <- ggplot(time_tests.rest, aes(y=Genus, x = test, fill = effect )) +
   geom_tile(color = "grey50")+
-  geom_text(aes(label = round(effect, digits = 2)), color = "black", size = 4) +
+  geom_text(aes(label = ifelse(is.na(effect), "", sprintf("%0.2f", round(effect, digits = 2))) , size = 4)) +
   scale_fill_gradientn(name  = "Effect size", limits = c(-3, 3), colours = c( '#00767B', '#238F9D', '#42A7C6', '#60BCE9', '#9DCCEF',  
                                                                                            '#DEE6E7', '#ECEADA', '#F9D576', '#FFB954', '#FD9A44', 
                                                                                            '#F57634', '#E94C1F', '#D11807'), na.value = "#bbbbbb") +
@@ -434,6 +442,74 @@ plot_grid(Heatmap.top10 + theme(legend.position ="none"),
           labels = c("A", "B", ""),
           rel_heights = c(0.3,1,0.15))
 
+
+## Facetted heatmap of both data subsets ----------------------------------------
+#Combine all data together in one df for plotting
+Diff.Ab.Genus.T1.vs.T6 <- bind_rows("Day 1 vs Day 6" = Genus.time, 
+                                    "noUV-treated polymers: Day 1 vs 6" = Genus.noUV.time,
+                                   "UV-treated polymers: Day 1 vs 6" = Genus.UV.time,
+                                    "Hetero atoms: Day 1 vs 6" = Genus.hatoms.time,
+                                   "C-backbone: Day 1 vs 6" = Genus.cback.time,
+                                    "C-backbone UV-treated: Day 1 vs 6" = Genus.cback.UV.time,
+                                    .id = "test")
+
+time_tests <- Diff.Ab.Genus.T1.vs.T6 %>% dplyr::select(test, Genus, we.eBH, wi.eBH, effect) %>% complete(test, Genus) 
+
+time_tests.subs <-time_tests %>% mutate(Subset = case_when(
+  Genus %in% Genus.top10 ~ "Top 5 intersection",
+  Genus %in% Rest ~ "Other genera",
+))
+
+time_tests.subs.symb <- time_tests.subs %>% mutate(Genus = if_else(
+  Genus %in% intersect(pdb,hcb), paste(Genus, sep = "   ", "#+"), 
+  if_else(Genus %in% pdb, paste(Genus, sep = "  ", "#"),
+          if_else(Genus %in% hcb, paste(Genus, sep = "  ", "+"), Genus))))
+
+
+
+time_tests.subs.symb $Genus <- factor(time_tests.subs.symb $Genus, levels=rev(sort(unique(time_tests.subs.symb $Genus))))
+
+Heatmap.all <- ggplot(time_tests.subs.symb , aes(y=Genus, x = test, fill = effect )) +
+  geom_tile(color = "grey50")+
+  geom_text(aes(label = ifelse(is.na(effect), "", sprintf("%0.2f", round(effect, digits = 2))) , size = 4)) +
+  scale_fill_gradientn(name  = "Effect size", limits = c(-3, 3), colours = c( '#00767B', '#238F9D', '#42A7C6', '#60BCE9', '#9DCCEF',  
+                                                                              '#DEE6E7', '#ECEADA', '#F9D576', '#FFB954', '#FD9A44', 
+                                                                              '#F57634', '#E94C1F', '#D11807'), na.value = "#bbbbbb") +
+  theme_classic() +
+  scale_x_discrete(limits = c("Day 1 vs Day 6", "UV-treated polymers: Day 1 vs 6",
+                              "noUV-treated polymers: Day 1 vs 6",  "C-backbone: Day 1 vs 6", 
+                              "C-backbone UV-treated: Day 1 vs 6","Hetero atoms: Day 1 vs 6" )) +
+  facet_nested(fct_relevel(Subset, "Top 5 intersection", "Other genera") ~ ., drop = F,
+                scales = "free_y", space = "free_y",
+                axes = 'margins', as.table = T, 
+                nest_line = element_line(),
+                strip = strip_nested(background_y =  elem_list_rect(color = "grey30",
+                                                                     fill = "white",  linewidth = 1),
+                                      text_y = elem_list_text(size = 13, 
+                                                              color =  "grey30", by_layer_y = F))) + 
+  guides(y="axis_nested") +
+  theme(
+    axis.text.x=element_text(size = 12, angle = 45, hjust = 1),  
+    axis.text.y=element_text(size= 12, face = "italic"), 
+    legend.text=element_text(size = 12),
+    legend.title = element_text(size=15),
+    axis.title.x = element_blank(),
+    axis.title.y = element_text(size=15),
+    #strip.text.x = element_text(size = 15),
+    #strip.placement = "outside", 
+    #strip.text.y = element_text(angle = 0),
+    plot.title = element_text(size = 15),
+    panel.border = element_rect(color = "grey50", fill = NA),
+    #strip.background = element_rect( color = "#FFFFFF")
+    legend.position = "bottom",
+   )+
+  labs(title = "",
+       subtitle = "",
+       x = "", y= "") +
+  guides(fill = guide_colourbar(barwidth = 10, barheight = 1, label.position = "top", ticks.colour = "black"))+
+  xlab(label = "Pairwise test")
+
+Heatmap.all
 #### Heatmap qvalues ####
 # pivot data longer to be able to plot q-values
 q_vals = time_tests.xp %>% pivot_longer(cols = we.eBH:wi.eBH,

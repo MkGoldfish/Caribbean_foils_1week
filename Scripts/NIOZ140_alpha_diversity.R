@@ -331,7 +331,7 @@ P.Richness <- ggplot(Richness.long.c,         #Pick data to plot
         panel.grid.major.y = element_line(color = "grey90", linetype = 3),
         panel.grid.major.x = element_blank(),
         ggh4x.axis.nestline.x = element_line(linetype = c(6,1), linewidth = 1, color = c("black", "darkgrey")),
-        ggh4x.axis.nesttext.x = element_text(angle = 0, color = c("black", "darkgrey"), hjust = 0.5)) +
+        ggh4x.axis.nesttext.x = element_blank()) +
   scale_colour_manual(values = Pal.plast) +
   scale_fill_manual(values = Pal.plast) +
   labs( title = "Richness", fill = "Polymer") +
@@ -430,7 +430,7 @@ Chao1 <- ggplot(chao1.c,         #Pick data to plot
         panel.grid.major.y = element_line(color = "grey90", linetype = 3),
         panel.grid.major.x = element_blank(),
         ggh4x.axis.nestline.x = element_line(linetype = c(6,1), linewidth = 1, color = c("black", "darkgrey")),
-        ggh4x.axis.nesttext.x = element_text(angle = 0, color = c("black", "darkgrey"), hjust = 0.5)) +
+        ggh4x.axis.nesttext.x = element_blank()) +
   scale_colour_manual(values = Pal.plast) +
   scale_fill_manual(values = Pal.plast) +
   xlab("") +
@@ -468,7 +468,7 @@ Simpson <- ggplot(Simpson.c,         #Pick data to plot
         panel.grid.major.y = element_line(color = "grey90", linetype = 3),
         panel.grid.major.x = element_blank(),
         ggh4x.axis.nestline.x = element_line(linetype = c(6,1), linewidth = 1, color = c("black", "darkgrey")),
-        ggh4x.axis.nesttext.x = element_text(angle = 0, color = c("black", "darkgrey"), hjust = 0.5)) +
+        ggh4x.axis.nesttext.x = element_blank()) +
   scale_colour_manual(values = Pal.plast) +
   scale_fill_manual(values = Pal.plast) +
   xlab("") +
@@ -509,7 +509,7 @@ Shannon <- ggplot(Shannon.c,         #Pick data to plot
         panel.grid.major.y = element_line(color = "grey90", linetype = 3),
         panel.grid.major.x = element_blank(),
         ggh4x.axis.nestline.x = element_line(linetype = c(6,1), linewidth = 1, color = c("black", "darkgrey")),
-        ggh4x.axis.nesttext.x = element_text(angle = 0, color = c("black", "darkgrey"), hjust = 0.5)) +
+        ggh4x.axis.nesttext.x = element_blank()) +
   scale_colour_manual(values = Pal.plast) +
   scale_fill_manual(values = Pal.plast) +
   xlab("") +

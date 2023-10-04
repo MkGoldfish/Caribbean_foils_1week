@@ -357,7 +357,7 @@ simper.diffsum <- simper.cumsum %>%
   mutate(diffsum = cusum - dplyr::lag(cusum, default = dplyr::first(cusum))) %>% ungroup()
 
 head(simper.diffsum)
-unique(simper.diffsum.xp$test)
+unique(simper.diffsum$test)
 
 # With the previous piece of code, we got 0 for the first genus per test
 # because we took the differce between current and previous
@@ -380,7 +380,7 @@ Heatmap <- ggplot(simper.diffsum.xp.symb, # plot expanded df
                   aes(y=fct_reorder(species,cusum), x = test, fill = cusum )) + #pick values to plot, in this case species vs test, and average dissimilarity as fill. 
   geom_tile(colour = "grey30") + #color of tile borders
   geom_text(aes(label = (contribution *100) %>% round(1)), color = "black", size = 6, fontface = 'bold') + #geom text, the amount of digits
-  scale_fill_gradientn(name  = "Contribution %",  colours = viridis, limits = c(0,0.301), na.value ="#bbbbbb", labels = scales::percent) + #set-up gradient, in this case magma from viridis package
+  scale_fill_gradientn(name  = "Cumulative Contribution (%)",  colours = viridis, limits = c(0,0.301), na.value ="#bbbbbb", labels = scales::percent) + #set-up gradient, in this case magma from viridis package
   theme_classic() +
   scale_x_discrete(limits = c( "Ungrouped", "day1.day6"  , "UV.day1.day6" ,"noUV.day1.day6", "Carbon.day1.day6", "Hetero.day1.day6",   
                                     "Carbon.Hetero", "Nylon.PE", "PE.PET", "PP.PET", "PS.PE", "PS.PP", 
@@ -388,10 +388,10 @@ Heatmap <- ggplot(simper.diffsum.xp.symb, # plot expanded df
                                    "PE.Nylon.day6", "PE.PET.day6", "PS.Nylon.day6", 
                                    "PS.PE.day6",  "PS.PP.day6" )) +
   theme(
-    axis.text.x=element_text(size = 15, angle = 60, hjust = 1), 
-    axis.text.y=element_text(size= 15, face = "italic", color = "black"), 
-    legend.text=element_text(size = 13),
-    legend.title = element_text(size=15),
+    axis.text.x=element_text(size = 16, angle = 60, hjust = 1), 
+    axis.text.y=element_text(size= 16, face = "italic", color = "black"), 
+    legend.text=element_text(size = 14),
+    legend.title = element_text(size=16),
     axis.title.x = element_blank(),
     axis.title.y = element_blank(),
     #strip.text.x = element_text(size = 15),
@@ -459,4 +459,4 @@ plot_grid(Table,
           ncol = 1,
           align = 'v',
           axis = "l",
-          rel_heights = c(0.18,1,0.1))
+          rel_heights = c(0.18,1,0.15))

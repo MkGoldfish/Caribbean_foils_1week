@@ -180,7 +180,7 @@ plot.pdb <- ggplot(Gen.PDB.filt_plasts, aes(x = Material, y = Genus.pol)) +
 plot.pdb
 
 
-#### Bubbleplot of PlaticDB and HCB genera ####
+#### Bubbleplot of PlasticDB and HCB genera ####
 # All genera that are both PDB and HCB, filter RA>0.25%
 HCB_genera <- Genus_plastoil %>% dplyr::select( Description, Genus, Genus_rep_rel_abund, 
                                                 timepoint, Material, treatment) %>% filter(Genus_rep_rel_abund > 0.0025)

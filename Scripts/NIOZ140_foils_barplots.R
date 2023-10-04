@@ -13,13 +13,6 @@ library(ggpubr)
 library(ggh4x)
 library(rvg)
 library(officer)
-library("ggthemes")
-library("wesanderson")
-library("IslamicArt")
-library("Polychrome")
-library("colorblindr")
-
-
 
 ###%#_______________________________________________________________________________________#%###
 ####                  Import Data                                                            ####
@@ -151,8 +144,8 @@ Phyla_bar <- ggplot(Phyla_filtAb, aes(x=interaction(Material, category), y= Phyl
     plot.title = element_text(size = 20, hjust = 0.5),
     panel.border = element_rect(color = "grey90", fill = NA),
     ggh4x.axis.nestline.x = element_line(linetype = c(6,1), linewidth = 1, color = c("black", "darkgrey")),
-    ggh4x.axis.nesttext.x = element_text(angle = 0, color = c("black", "darkgrey"), hjust = 0.5),
-    panel.grid.major.y = element_line(color = "grey90", linetype = 3),
+    ggh4x.axis.nesttext.x = element_blank(),
+    panel.grid.major.y = element_blank(),
     panel.grid.major.x = element_blank()
     ) +
    ylab("Relative Abundance")+xlab("Material") + labs(fill = "Phylum")

@@ -143,7 +143,7 @@ Genus_bubble <- ggplot(top_genus,aes(x=interaction(Material, category),y= Genus)
                strip = strip_nested(
                  background_y =  elem_list_rect(color = "grey25",
                                                 fill = "white", linewidth = 1),
-                 text_y = elem_list_text(size = 12, angle = 0, 
+                 text_y = elem_list_text(size = 13, angle = 0, 
                                          color = "grey25", by_layer_y = F),
                  background_x = (element_rect(fill = "grey90", color = "grey90", linetype = 0))
                )) + 
@@ -153,13 +153,13 @@ Genus_bubble <- ggplot(top_genus,aes(x=interaction(Material, category),y= Genus)
     axis.text.y=element_text(size= 13, face = "italic", color = "black"), 
     legend.text=element_text(size = 12),
     legend.title = element_text(size=13),
-    axis.title.x = element_text(size=15),
-    axis.title.y = element_text(size=15),
+    axis.title.x = element_text(size=13),
+    axis.title.y = element_text(size=13),
     strip.text.x = element_text(size = 13),
     plot.title = element_text(size = 20, hjust = 0.5),
     panel.border = element_rect(color = "grey90", fill = NA),
-    ggh4x.axis.nestline.x = element_line(linetype = c(6,1), linewidth = 1, color = c("black", "darkgrey")),
-    ggh4x.axis.nesttext.x = element_text(angle = 0, color = c("black", "darkgrey"), hjust = 0.5),
+    ggh4x.axis.nestline.x = element_line(linetype = c(6,1), linewidth = 2, color = c("black", "darkgrey")),
+    ggh4x.axis.nesttext.x = element_blank(),
     panel.grid.major.y = element_line(color = "grey90", linetype = 3),
     panel.grid.major.x = element_blank(),
     legend.position = "bottom") +
@@ -225,24 +225,24 @@ Order_bubble <- ggplot(top_orders,aes(x=interaction(Material, category),y= Order
                   background_y =  elem_list_rect(color = c("#F2AF29","#ecc8af", "#c18c5d", "#495867","#436436", "#004e64"
                                                             ),
                                                  fill = rep_len("white", 6), linewidth = rep_len(1,6)),
-                  text_y = elem_list_text(size = rep_len(13,6), angle = rep_len(0,6), face = rep_len("bold", 6),
+                  text_y = elem_list_text(size = rep_len(14,6), angle = rep_len(0,6), face = rep_len("bold", 6),
                                           color = c("#F2AF29","#ecc8af", "#c18c5d", "#495867","#436436", "#004e64"
                                           )),
                   background_x = (element_rect(fill = "grey90", color = "grey90", linetype = 0)
                 ))) + 
   theme_minimal()+
   theme(
-    axis.text.x=element_text(size = 12, angle = 60, hjust = 1), 
-    axis.text.y=element_text(size= 12, face = "italic"), 
+    axis.text.x=element_text(size = 11, angle = 60, hjust = 1), 
+    axis.text.y=element_text(size= 11, face = "italic"), 
     legend.text=element_text(size = 12),
     legend.title = element_text(size=13),
-    axis.title.x = element_text(size=15),
-    axis.title.y = element_text(size=15),
-    strip.text.x = element_text(size = 13),
-    plot.title = element_text(size = 10),
+    axis.title.x = element_text(size=13),
+    axis.title.y = element_text(size=13),
+    strip.text.x = element_text(size = 14),
+    plot.title = element_blank(),
     panel.border = element_rect(color = "grey90", fill = NA),
     ggh4x.axis.nestline.x = element_line(linetype = c(6,1), linewidth = 1, color = c("black", "darkgrey")),
-    ggh4x.axis.nesttext.x = element_text(angle = 0, color = c("black", "darkgrey"), hjust = 0.5),
+    ggh4x.axis.nesttext.x = element_blank(),
     panel.grid.major.y = element_line(color = "grey90", linetype = 3),
     panel.grid.major.x = element_blank(),
     legend.position = "bottom") +
