@@ -297,7 +297,7 @@ Diff.Ab.Genus <- Diff.Ab.Genus.T1.vs.T6$Genus %>% unique()
 write_lines(Diff.Ab.Genus, "Analysis/Diff.Ab.Genera.txt")
 
 # ####_______________________________#%##
-# #### Differentially Abundant HCBs   ####
+# #### Differentially Abundant HCBs   
 # Diff.Ab.HCB <- Diff.Ab.Genus.T1.vs.T6$Genus
 # Diff.Ab.HCB <- Diff.Ab.HCB[Diff.Ab.HCB%in%plast.HCB] %>% unique(Diff.Ab.HCB) 
 # length(Diff.Ab.HCB)
@@ -467,7 +467,7 @@ time_tests.subs.symb <- time_tests.subs %>% mutate(Genus = if_else(
 
 
 
-time_tests.subs.symb $Genus <- factor(time_tests.subs.symb $Genus, levels=rev(sort(unique(time_tests.subs.symb $Genus))))
+time_tests.subs.symb$Genus <- factor(time_tests.subs.symb $Genus, levels=rev(sort(unique(time_tests.subs.symb $Genus))))
 
 Heatmap.all <- ggplot(time_tests.subs.symb , aes(y=Genus, x = test, fill = effect )) +
   geom_tile(color = "grey50")+
@@ -506,7 +506,7 @@ Heatmap.all <- ggplot(time_tests.subs.symb , aes(y=Genus, x = test, fill = effec
   labs(title = "",
        subtitle = "",
        x = "", y= "") +
-  guides(fill = guide_colourbar(barwidth = 10, barheight = 1, label.position = "top", ticks.colour = "black"))+
+  guides(fill = guide_colourbar(barwidth = 10, barheight = 1, label.position = "top", ticks.colour = "black"), size = "none")+
   xlab(label = "Pairwise test")
 
 Heatmap.all
