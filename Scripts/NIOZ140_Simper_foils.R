@@ -25,7 +25,6 @@ setwd("C:/Users/mgoudriaan/Documents/R-files/Projects/NIOZ140-foils/R-project-fi
 ####                   Load libraries                                                      ####
 ###%#_______________________________________________________________________________________#%###
 library(devtools)
-library(tidyverse)
 library(vegan)
 library(compositions)
 library(ggforce)
@@ -33,6 +32,7 @@ library(scales)
 library("remotes")
 library("GGally")
 library(cowplot)
+library(tidyverse)
 
 
 ###%#_______________________________________________________________________________________#%###
@@ -314,35 +314,34 @@ hcb <- as.character(read_lines("../data/Hydrocarbon_degraders_sorted_22_08.txt")
 pdb <- as.character(read_lines("../data/PlasticDB_Prokaryotic_genera.txt"))
 
 #Bund into dataframe
-simper.df <- bind_rows(Ungrouped = Ungrouped,
-                       day1.day6 = T1.T6, 
-                       day6.UV.NoUV = T6.treat,
-                       UV.day1.day6 =  UV.T1.T6,
-                       noUV.day1.day6 = noUV.T1.T6,
+simper.df <- bind_rows("Day1 vs Day6" = T1.T6, 
+                       "Day6 UV vs NoUV" = T6.treat,
+                       "UV Day1 vs Day6" =  UV.T1.T6,
+                       "noUV Day1 Day6" = noUV.T1.T6,
                        
-                       Carbon.Hetero =  Carbon.Hetero, 
-                       Carbon.Hetero.day6 = Carbon.Hetero.T6, 
-                       Carbon.day1.day6 = Carbon.T1.T6,
-                       Hetero.day1.day6 =  Hetero.T1.T6, 
-                       Carbon.UV.noUV.day6 = Carbon.UV.noUV.T6,
-                       Hetero.UV.noUV.day6 = Hetero.UV.noUV.T6,
+                       "C-C vs H-A backbone" =  Carbon.Hetero, 
+                       "Day 6 C-C vs H-A backbone" = Carbon.Hetero.T6, 
+                       "C-C backbone Day 1 vs Day6" = Carbon.T1.T6,
+                       "H-A backbone Day 1 vs Day6" =  Hetero.T1.T6, 
+                       "C-C backbone Day 6 UV vs noUV" = Carbon.UV.noUV.T6,
+                       "H-A backbone Day 6 UV vs noUV" = Hetero.UV.noUV.T6,
                        
-                       PE.Nylon.day6 = PE.Nylon.T6, 
-                       PE.PET.day6 =  PE.PET.T6, 
-                       PS.Nylon.day6 = PS.Nylon.T6 , 
-                       PS.PE.day6 = PS.PE.T6, 
-                       PS.PP.day6 = PS.PP.T6,  
+                       "Day 6 PE vs Nylon" = PE.Nylon.T6, 
+                       "Day 6 PE vs PET"=  PE.PET.T6, 
+                       "Day 6 PS vs Nylon" = PS.Nylon.T6 , 
+                       "Day 6 PS vs PE" = PS.PE.T6, 
+                       "Day 6 PS vs PP" = PS.PP.T6,  
                        
-                       Nylon.PE = Nylon.PE, 
-                       PE.PET =  PE.PET , 
-                       PP.PET = PP.PET,
-                       PS.PE = PS.PE, 
-                       PS.PP = PS.PP,  
+                       "PE vs Nylon" = Nylon.PE, 
+                       "PE vs PET" =  PE.PET , 
+                       "PP vs PET" = PP.PET,
+                       "PS vs PE" = PS.PE, 
+                       "PS vs PP"= PS.PP,  
                        .id = "test") 
 
 
 #Filter the df on the first XX species based on the cumsum values. 
-simper.cumsum <- simper.df %>%  select(test, species, average, sd, ord, cusum, p) %>% # select relevant columns
+simper.cumsum <- simper.df %>%  select(test, species, average, sd, ord, cusum) %>% # select relevant columns
   filter(!species %in% c("NA")) %>%  #remove NA genera 
   group_by(test) %>% slice_min(order_by = cusum, n = 10)  %>% ungroup() %>% 
   select(test,species, average, cusum) 
@@ -377,21 +376,21 @@ simper.diffsum.xp.symb <- simper.diffsum.xp %>% mutate(species = if_else(
 viridis <- c("#fde725", "#b5de2b", "#6ece58", "#35b779", "#1f9e89", "#26828e", "#31688e", "#3e4989", "#482878")
 
 Heatmap <- ggplot(simper.diffsum.xp.symb, # plot expanded df
-                  aes(y=fct_reorder(species,cusum), x = test, fill = cusum )) + #pick values to plot, in this case species vs test, and average dissimilarity as fill. 
-  geom_tile(colour = "grey30") + #color of tile borders
-  geom_text(aes(label = (contribution *100) %>% round(1)), color = "black", size = 6, fontface = 'bold') + #geom text, the amount of digits
-  scale_fill_gradientn(name  = "Cumulative Contribution (%)",  colours = viridis, limits = c(0,0.301), na.value ="#bbbbbb", labels = scales::percent) + #set-up gradient, in this case magma from viridis package
+                  aes(y=fct_reorder(species,cusum), x = test)) + #pick values to plot, in this case species vs test, and average dissimilarity as fill. 
+  geom_tile(colour = "grey30", fill = 'white') + #color of tile borders
+  geom_text(aes(label =  sprintf("%0.1f", round(100 * contribution, digits = 1))), size = 5) + #geom text, the amount of digits
+  # scale_fill_gradientn(name  = "Cumulative Contribution (%)",  colours = viridis, limits = c(0,0.301), na.value ="#bbbbbb", labels = scales::percent) + #set-up gradient, in this case magma from viridis package
   theme_classic() +
-  scale_x_discrete(limits = c( "Ungrouped", "day1.day6"  , "UV.day1.day6" ,"noUV.day1.day6", "Carbon.day1.day6", "Hetero.day1.day6",   
-                                    "Carbon.Hetero", "Nylon.PE", "PE.PET", "PP.PET", "PS.PE", "PS.PP", 
-                                   "day6.UV.NoUV", "Carbon.UV.noUV.day6", "Hetero.UV.noUV.day6", "Carbon.Hetero.day6", 
-                                   "PE.Nylon.day6", "PE.PET.day6", "PS.Nylon.day6", 
-                                   "PS.PE.day6",  "PS.PP.day6" )) +
+  scale_x_discrete(limits = c( "Day1 vs Day6", "UV Day1 vs Day6", "noUV Day1 Day6", "C-C backbone Day 1 vs Day6", "H-A backbone Day 1 vs Day6",   
+                               "C-C vs H-A backbone" , "PE vs Nylon", "PE vs PET", "PP vs PET", "PS vs PE", "PS vs PP", 
+                                   "Day6 UV vs NoUV", "C-C backbone Day 6 UV vs noUV", "H-A backbone Day 6 UV vs noUV", "Day 6 C-C vs H-A backbone", 
+                               "Day 6 PE vs Nylon", "Day 6 PE vs PET", "Day 6 PS vs Nylon", 
+                               "Day 6 PS vs PE",  "Day 6 PS vs PP" )) +
   theme(
-    axis.text.x=element_text(size = 16, angle = 60, hjust = 1), 
-    axis.text.y=element_text(size= 16, face = "italic", color = "black"), 
-    legend.text=element_text(size = 14),
-    legend.title = element_text(size=16),
+    axis.text.x=element_text(size = 14, angle = 60, hjust = 1), 
+    axis.text.y=element_text(size= 14, face = "italic", color = "black"), 
+    legend.text=element_text(size = 13),
+    legend.title = element_text(size=13),
     axis.title.x = element_blank(),
     axis.title.y = element_blank(),
     #strip.text.x = element_text(size = 15),
@@ -402,7 +401,7 @@ Heatmap <- ggplot(simper.diffsum.xp.symb, # plot expanded df
     #strip.background = element_rect( color = "#FFFFFF"),
     legend.position = "bottom"
      )+
-  guides(fill = guide_colourbar(barwidth = 15, barheight = 1.5, title.position = "bottom")) +
+  guides(fill = guide_colourbar(barwidth = 15, barheight = 1.5, title.position = "bottom"), size = "none") +
   xlab(label = "SIMPER test") +
   ylab(label = "Genera contributing to dissimilarity")
 
@@ -417,9 +416,9 @@ Simper.summ.p <- Simper.summ %>% pivot_longer(cols = !Test,
 Table <- ggplot(Simper.summ.p, # plot expanded df
                 aes(y=variable, x = Test, fill = value )) + #pick values to plot, in this case species vs test, and average dissimilarity as fill. 
   geom_tile(colour = "grey50", fill = "white") + #color of tile borders
-  geom_text(aes(label = (value * 100) %>% round(2)), color = "black", size = 6, fontface = 'bold') + #geom text, the amount of digits
+  geom_text(aes(label = sprintf("%0.1f", round(100 * value, digits = 1))), size = 5, fontface = 'bold') + #geom text, the amount of digits
   theme_classic() +
-  scale_x_discrete(limits = c("Ungrouped", "T1.T6", "UV.T1.T6" ,"noUV.T1.T6", "Carbon.T1.T6", "Hetero.T1.T6",  
+  scale_x_discrete(limits = c( "T1.T6", "UV.T1.T6" ,"noUV.T1.T6", "Carbon.T1.T6", "Hetero.T1.T6",  
                                 "Carbon.Hetero", "Nylon.PE", "PE.PET", "PP.PET", "PS.PE", "PS.PP", 
                                "T6.UV.noUV", "Carbon.UV.noUV.T6", "Hetero.UV.noUV.T6", "Carbon.Hetero.T6", 
                                "PE.Nylon.T6", "PE.PET.T6", "PS.Nylon.T6", 
@@ -429,9 +428,9 @@ Table <- ggplot(Simper.summ.p, # plot expanded df
                    labels = c( "Cumulative difference\n caused by 10 genera", "Average Dissimilarity" ))+
   theme(
     axis.text.x=element_blank(), 
-    axis.text.y=element_text(size= 15, face = "bold", color = "black"), 
-    legend.text=element_text(size = 13),
-    legend.title = element_text(size=15),
+    axis.text.y=element_text(size= 14, face = "bold", color = "black"), 
+    legend.text=element_text(size = 12),
+    legend.title = element_text(size=13),
     axis.title.x = element_blank(),
     axis.title.y = element_blank(),
     #strip.text.x = element_text(size = 15),
@@ -441,6 +440,7 @@ Table <- ggplot(Simper.summ.p, # plot expanded df
     panel.border = element_rect(color = "grey", fill = NA),
     #strip.background = element_rect( color = "#FFFFFF")
     legend.position = "top" )+
+  guides(size = "none") +
   xlab(label = "") +
   ylab(label = "")
  
@@ -455,8 +455,7 @@ legend <- get_legend(Heatmap +
 
 plot_grid(Table, 
           Heatmap + theme(legend.position ="none"),
-          legend,
           ncol = 1,
           align = 'v',
           axis = "l",
-          rel_heights = c(0.18,1,0.15))
+          rel_heights = c(0.18,1))
