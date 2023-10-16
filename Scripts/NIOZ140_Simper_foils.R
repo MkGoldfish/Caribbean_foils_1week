@@ -21,6 +21,7 @@
 ####                 Working Directory                                                    ####
 ###%#_______________________________________________________________________________________#%###
 setwd("C:/Users/mgoudriaan/Documents/R-files/Projects/NIOZ140-foils/R-project-files/amplicon-analysis_plots_alfa/scripts")
+
 ###%#_______________________________________________________________________________________#%###
 ####                   Load libraries                                                      ####
 ###%#_______________________________________________________________________________________#%###
@@ -33,7 +34,6 @@ library("remotes")
 library("GGally")
 library(cowplot)
 library(tidyverse)
-
 
 ###%#_______________________________________________________________________________________#%###
 ####                  Import Data &                    
@@ -317,7 +317,7 @@ pdb <- as.character(read_lines("../data/PlasticDB_Prokaryotic_genera.txt"))
 simper.df <- bind_rows("Day1 vs Day6" = T1.T6, 
                        "Day6 UV vs NoUV" = T6.treat,
                        "UV Day1 vs Day6" =  UV.T1.T6,
-                       "noUV Day1 Day6" = noUV.T1.T6,
+                       "noUV Day1 vs Day6" = noUV.T1.T6,
                        
                        "C-C vs H-A backbone" =  Carbon.Hetero, 
                        "Day 6 C-C vs H-A backbone" = Carbon.Hetero.T6, 
@@ -379,9 +379,9 @@ Heatmap <- ggplot(simper.diffsum.xp.symb, # plot expanded df
                   aes(y=fct_reorder(species,cusum), x = test)) + #pick values to plot, in this case species vs test, and average dissimilarity as fill. 
   geom_tile(colour = "grey30", fill = 'white') + #color of tile borders
   geom_text(aes(label =  sprintf("%0.1f", round(100 * contribution, digits = 1))), size = 5) + #geom text, the amount of digits
-  # scale_fill_gradientn(name  = "Cumulative Contribution (%)",  colours = viridis, limits = c(0,0.301), na.value ="#bbbbbb", labels = scales::percent) + #set-up gradient, in this case magma from viridis package
+  scale_fill_gradientn(name  = "Cumulative Contribution (%)",  colours = viridis, limits = c(0,0.301), na.value ="#bbbbbb", labels = scales::percent) + #set-up gradient, in this case magma from viridis package
   theme_classic() +
-  scale_x_discrete(limits = c( "Day1 vs Day6", "UV Day1 vs Day6", "noUV Day1 Day6", "C-C backbone Day 1 vs Day6", "H-A backbone Day 1 vs Day6",   
+  scale_x_discrete(limits = c( "Day1 vs Day6", "UV Day1 vs Day6", "noUV Day1 vs Day6", "C-C backbone Day 1 vs Day6", "H-A backbone Day 1 vs Day6",   
                                "C-C vs H-A backbone" , "PE vs Nylon", "PE vs PET", "PP vs PET", "PS vs PE", "PS vs PP", 
                                    "Day6 UV vs NoUV", "C-C backbone Day 6 UV vs noUV", "H-A backbone Day 6 UV vs noUV", "Day 6 C-C vs H-A backbone", 
                                "Day 6 PE vs Nylon", "Day 6 PE vs PET", "Day 6 PS vs Nylon", 
