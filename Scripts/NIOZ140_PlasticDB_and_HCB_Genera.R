@@ -241,7 +241,7 @@ HCB_bubble <- ggplot(HCB_genera_plasts, aes(x= interaction(Material, category), 
     axis.text.x=element_text(size = 14, angle = 60, hjust = 1), 
     axis.text.y=element_text(size= 13 ), 
     legend.text=element_text(size = 12),
-    legend.title = element_text(size = 13),
+    legend.title = element_text(size = 14),
     legend.position = "bottom",
     legend.box = "vertical", 
     axis.title.x = element_text(size = 13),
@@ -255,7 +255,7 @@ HCB_bubble <- ggplot(HCB_genera_plasts, aes(x= interaction(Material, category), 
     ggh4x.axis.nesttext.x = element_blank(),
     panel.grid.major.y = element_line(color = "grey90", linetype = 3),
     panel.grid.major.x = element_blank()) +
-  labs(title = "", fill = "Polymer", size = "Relative \nAbundance",
+  labs(title = "", fill = "Polymer", size = "Relative Abundance",
        subtitle = "") 
 
 HCB_bubble

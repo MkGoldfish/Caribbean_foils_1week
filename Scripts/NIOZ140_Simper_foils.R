@@ -387,10 +387,10 @@ Heatmap <- ggplot(simper.diffsum.xp.symb, # plot expanded df
                                "Day 6 PE vs Nylon", "Day 6 PE vs PET", "Day 6 PS vs Nylon", 
                                "Day 6 PS vs PE",  "Day 6 PS vs PP" )) +
   theme(
-    axis.text.x=element_text(size = 14, angle = 60, hjust = 1), 
-    axis.text.y=element_text(size= 14, face = "italic", color = "black"), 
-    legend.text=element_text(size = 13),
-    legend.title = element_text(size=13),
+    axis.text.x=element_text(size = 12, angle = 60, hjust = 1), 
+    axis.text.y=element_text(size= 12, face = "italic", color = "black"), 
+    legend.text=element_text(size = 11),
+    legend.title = element_text(size=11),
     axis.title.x = element_blank(),
     axis.title.y = element_blank(),
     #strip.text.x = element_text(size = 15),
@@ -428,9 +428,9 @@ Table <- ggplot(Simper.summ.p, # plot expanded df
                    labels = c( "Cumulative difference\n caused by 10 genera", "Average Dissimilarity" ))+
   theme(
     axis.text.x=element_blank(), 
-    axis.text.y=element_text(size= 14, face = "bold", color = "black"), 
-    legend.text=element_text(size = 12),
-    legend.title = element_text(size=13),
+    axis.text.y=element_text(size = 12, face = "bold", color = "black"), 
+    legend.text=element_text(size = 10),
+    legend.title = element_text(size=11),
     axis.title.x = element_blank(),
     axis.title.y = element_blank(),
     #strip.text.x = element_text(size = 15),
