@@ -36,7 +36,6 @@ setwd("C:/Users/mgoudriaan/Documents/R-files/Projects/NIOZ140-foils/R-project-fi
 library(devtools)
 library(phyloseq)
 library(grid)
-library(tidyverse)
 library(vegan)
 library(compositions)
 library("remotes")
@@ -49,6 +48,7 @@ library("factoextra")
 library(usedist)
 library("ggthemes")
 library(cowplot)
+library(tidyverse)
 
 
 ####_______________________________________________________________________________________#%###
@@ -160,8 +160,8 @@ nmds_plot_ASV =
         axis.text.x = element_text(size = 15),
         legend.text = element_text(size = 15),
         legend.position="right", legend.box = "horizontal", 
-        axis.title.y = element_text(size = 20),
-        axis.title.x = element_text(size = 20),
+        axis.title.y = element_text(size = 16),
+        axis.title.x = element_text(size = 16),
         axis.line = element_blank(), 
         legend.title = element_text(size = 18),
         panel.background = element_blank(), panel.border = element_rect(colour = "darkgrey", fill = NA, linewidth = 1.2),
