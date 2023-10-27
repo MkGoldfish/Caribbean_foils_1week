@@ -271,8 +271,8 @@ Genus.cback.UV.time <- read.csv2("./Analysis/aldex_genus_clr_cbakcbone_UV_time_o
 Genus.time<- read.csv2("./Analysis/aldex_genus_clr_timepoint_output.csv", sep = ',', dec = '.', header = T )
 
 #Read HCB and PDB data for plotting
-hcb <- as.character(read_lines("./data/Hydrocarbon_degraders_sorted_22_08.txt"))
-pdb <- as.character(read_lines("./data/PlasticDB_Prokaryotic_genera.txt"))
+HCB <- as.character(read_lines("./data/Hydrocarbon_degraders_sorted_22_08.txt"))
+PDB <- as.character(read_lines("./data/PlasticDB_Prokaryotic_genera.txt"))
 plast.HCB <- read_lines("./data/PlasticDB_HCB_genera.txt")
 Genus <- read.csv2("./../amplicon-analysis_plots_alfa/Analysis/genus.csv")
 
@@ -284,12 +284,12 @@ plast.hcb.intersect <- intersect(PDB, HCB)
 
 
 #Combine all data together in one df for plotting
-Diff.Ab.Genus.T1.vs.T6 <- bind_rows(Day1.vs.Day6 = Genus.time, 
-                           noUV.treated.polymers.Day1.vs.6 = Genus.noUV.time,
-                           UV.treated.polymers.Day1.vs.6 = Genus.UV.time,
-                           hetero.atoms.Day1.vs.6 = Genus.hatoms.time,
-                           c.backbone.Day1.vs.6 = Genus.cback.time,
-                           c.backbone.UV.treated.Day1.vs.6 = Genus.cback.UV.time,
+Diff.Ab.Genus.T1.vs.T6 <- bind_rows("Day1 vs Day6" = Genus.time, 
+                           "noUV polymers Day 1 vs Day6" = Genus.noUV.time,
+                           "UV polymers Day 1 vs Day6" = Genus.UV.time,
+                           "H-A backbone Day 1 vs Day6" = Genus.hatoms.time,
+                           "C-C backbone Day 1 vs Day6" = Genus.cback.time,
+                           "C-C backbone UV Day 1 vs Day6" = Genus.cback.UV.time,
                            .id = "test")
 
 Diff.Ab.Genus <- Diff.Ab.Genus.T1.vs.T6$Genus %>% unique()
@@ -324,8 +324,8 @@ Diff.Ab.Genus.symb.top10 <- Diff.Ab.Genus.top10 %>% mutate(Genus = if_else(
   if_else(Genus %in% pdb, paste(Genus, sep = "  ", "#"),
           if_else(Genus %in% hcb, paste(Genus, sep = "  ", "+"), Genus))))
 
-# what are in the ende the results of all time tests? 
-time_tests <- Diff.Ab.Genus.T1.vs.T6.symb %>% dplyr::select(test, Genus, we.eBH, wi.eBH, effect)
+# what are in the ends the results of all time tests? 
+time_tests <- Diff.Ab.Genus.symb.top10%>% dplyr::select(test, Genus, we.eBH, wi.eBH, effect)
 
 head(time_tests)
 write.csv(time_tests, "Analysis/Overview_Aldex2_genera.csv",
@@ -351,7 +351,6 @@ Diff.Ab.Genus.symb.rest <- Diff.Ab.Genus.rest %>% mutate(Genus = if_else(
 time_tests.rest <- Diff.Ab.Genus.symb.rest %>% dplyr::select(test, Genus, we.eBH, wi.eBH, effect) %>% complete(test, Genus)
 head(time_tests.rest)
 
-
 # pivot data longer to be able to plot q-values
 q_vals = time_tests.top10 %>% pivot_longer(cols = we.eBH:wi.eBH,
                                            names_to = "variable",
@@ -365,13 +364,13 @@ Heatmap.top10 <- ggplot(time_tests.top10, aes(y=Genus, x = test, fill = effect )
   scale_fill_gradientn(name  = "Effect size", limits = c(-3, 3), colours = c( '#00767B', '#238F9D', '#42A7C6', '#60BCE9', '#9DCCEF',  
                                                                                            '#DEE6E7', '#ECEADA', '#F9D576', '#FFB954', '#FD9A44', 
                                                                                            '#F57634', '#E94C1F', '#D11807'), na.value = "#bbbbbb") +
- scale_x_discrete(limits = c("Day1.vs.Day6", "UV.treated.polymers.Day1.vs.6",
-                             "noUV.treated.polymers.Day1.vs.6", "c.backbone.Day1.vs.6", 
-                             "c.backbone.UV.treated.Day1.vs.6", "hetero.atoms.Day1.vs.6" )) +
+ scale_x_discrete(limits = c("Day1 vs Day6", "UV polymers Day 1 vs Day6", 
+                             "noUV polymers Day 1 vs Day6", "C-C backbone Day 1 vs Day6", 
+                             "C-C backbone UV Day 1 vs Day6", "H-A backbone Day 1 vs Day6")) +
  theme_classic() +
   theme(
     axis.text.x=element_blank(), 
-    axis.text.y=element_text(size= 12, face = "italic"), 
+    axis.text.y=element_text(size= 13, face = "italic"), 
     legend.text=element_text(size = 12),
     legend.title = element_text(size=15),
     axis.title.x = element_blank(),
@@ -384,6 +383,7 @@ Heatmap.top10 <- ggplot(time_tests.top10, aes(y=Genus, x = test, fill = effect )
     plot.margin = unit(c(0,0,0,0), "cm"),
     #strip.background = element_rect( color = "#FFFFFF")
     legend.position = "none")+
+  guides(size = "none") +
   labs(title = "",
        subtitle = "",
        x = "", y= "", 
@@ -401,12 +401,12 @@ Heatmap.rest <- ggplot(time_tests.rest, aes(y=Genus, x = test, fill = effect )) 
                                                                                            '#DEE6E7', '#ECEADA', '#F9D576', '#FFB954', '#FD9A44', 
                                                                                            '#F57634', '#E94C1F', '#D11807'), na.value = "#bbbbbb") +
                                                                                              theme_classic() +
-  scale_x_discrete(limits = c("Day1.vs.Day6", "UV.treated.polymers.Day1.vs.6",
-                              "noUV.treated.polymers.Day1.vs.6", "c.backbone.Day1.vs.6", 
-                              "c.backbone.UV.treated.Day1.vs.6", "hetero.atoms.Day1.vs.6" )) +
+  scale_x_discrete(limits = c("Day1 vs Day6", "UV polymers Day 1 vs Day6", 
+                              "noUV polymers Day 1 vs Day6", "C-C backbone Day 1 vs Day6", 
+                              "C-C backbone UV Day 1 vs Day6", "H-A backbone Day 1 vs Day6")) +
   theme(
-    axis.text.x=element_text(size = 12, angle = 45, hjust = 1),  
-    axis.text.y=element_text(size= 12, face = "italic"), 
+    axis.text.x=element_text(size = 15, angle = 45, hjust = 1),  
+    axis.text.y=element_text(size= 13, face = "italic"), 
     legend.text=element_text(size = 12),
     legend.title = element_text(size=15),
     axis.title.x = element_blank(),
@@ -422,7 +422,7 @@ Heatmap.rest <- ggplot(time_tests.rest, aes(y=Genus, x = test, fill = effect )) 
   labs(title = "",
        subtitle = "",
        x = "", y= "") +
-  guides(fill = guide_colourbar(barwidth = 10, barheight = 1, label.position = "top", ticks.colour = "black"))+
+  guides(fill = guide_colourbar(barwidth = 10, barheight = 1, label.position = "top", ticks.colour = "black"), size = "none")+
   xlab(label = "Pairwise test")
 
 Heatmap.rest

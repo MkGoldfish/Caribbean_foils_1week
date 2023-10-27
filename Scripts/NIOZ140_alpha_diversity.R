@@ -37,24 +37,17 @@ setwd("C:/Users/mgoudriaan/Documents/R-files/Projects/NIOZ140-foils/R-project-fi
 library(devtools)
 library(phyloseq)
 library(grid)
-library(tidyverse)
 library(vegan)
 library(compositions)
 library(gghalves)
 library(ggrepel)
 library(microbiome)
-library("remotes")
 library("ggh4x")
 library(ggpubr)
-library("plotrix")
-library("FactoMineR")
-library("factoextra")
-library(patchwork)
 library(usedist)
 library("ggsci")
-library(rvg)
-library(officer)
 library("cowplot")
+library(tidyverse)
 
 ####_______________________________________________________________________________________#%###
 ####                  Import Data &                    ####
@@ -260,156 +253,48 @@ Richness.long.c <- Alpha.foils.long.c %>% filter(Diversity_Index %in% c("Observe
 Diversity.long.c <- Alpha.foils.long.c %>% filter(Diversity_Index %in% c("Shannon", "Simpson"))
 
 #### Statistics, are Alpha-divs significantly different ####
-
-# select the different columns to obtain the different measures in different columns
-obs.ft.v <- Alpha.Foils %>%  select(Observed, timepoint:category)
-chao1.v <- Alpha.Foils %>%  select(Chao1, timepoint:category)
-Shannon.v <- Alpha.Foils %>%  select(Shannon, timepoint:category)
-Simpson.v <- Alpha.Foils %>%  select(Simpson, timepoint:category)
-alpha_div_data  <- Alpha.Foils %>%  select(!Observed:Simpson)
-head(alpha_div_data)
-
-kt.chao.time <- kruskal.test(chao1$Chao1 ~ timepoint, data = alpha_div_data )
-kt.chao.timeUV <- kruskal.test(chao1$Chao1 ~ treat_time, data = alpha_div_data )
-kt.chao.cattimetreat <- kruskal.test(chao1$Chao1 ~ cat_time_treat, data = alpha_div_data )
-kt.chao.timemat <- kruskal.test(chao1$Chao1 ~ time_mat, data = alpha_div_data )
-
-pt.chao.timeUV <- pairwise.wilcox.test(chao1$Chao1, 
-                     g = alpha_div_data$treat_time,
-                     p.adjust.method = 'BH')
-
-pt.chao.time <- pairwise.wilcox.test(chao1$Chao1, 
-                                       g = alpha_div_data$timepoint,
-                                       p.adjust.method = 'BH')
-
-
-pt.chao.timemat<- pairwise.wilcox.test(chao1$Chao1, 
-                                       g = alpha_div_data$time_mat,
-                                       p.adjust.method = 'BH')
-
-kt.simp.time <- kruskal.test(Simpson$Simpson ~ timepoint, data = alpha_div_data )
-kt.simp.timeUV <- kruskal.test(Simpson$Simpson ~ treat_time, data = alpha_div_data )
-kt.simp.cattimetreat <- kruskal.test(Simpson$Simpson ~ cat_time_treat, data = alpha_div_data )
-kt.simp.time_mat <- kruskal.test(Simpson$Simpson ~ time_mat, data = alpha_div_data )
-
-pt.simp.timeUV <- pairwise.wilcox.test(Simpson$Simpson, 
-                                       g = alpha_div_data$treat_time,
-                                       p.adjust.method = 'BH')
-
-pt.simp.time <- pairwise.wilcox.test(Simpson$Simpson, 
-                                     g = alpha_div_data$timepoint,
-                                     p.adjust.method = 'BH')
-
-
-####_______________________________________________________________________________________#%###
-####          Observed richness                     ####
-####_______________________________________________________________________________________#%###
-Observed.Foils<- read_pptx()
-Observed.Foils <- read_pptx("../Reports/Observed_Foils_202211.pptx")
-
-### alpha div plot 
-P.Richness <- ggplot(Richness.long.c,         #Pick data to plot
-                   aes(x=interaction(Material, category), y = Value, fill = Material, color = Material)) + #Pick factors to use
-  geom_errorbar(aes(ymin=Value-se, ymax=Value+se, width=.1)) +
-  geom_point(size = 3) +
-  facet_nested_wrap(vars(Diversity_Index, timepoint, treatment),
-                    nrow = 1,  axes = "margins",
-                    remove_labels = "x", shrink = T) +
-  guides( x = "axis_nested") + 
-  theme_pubclean()+
-  theme(legend.position = "top",
-        legend.key = element_rect(fill = "white", colour = "white"),
-        axis.text.x=element_text(size = 13, angle = 60, hjust = 1), 
-        axis.text.y=element_text(size= 13), 
-        legend.text=element_text(size = 13),
-        legend.title = element_text(size=15, face = "bold"),
-        axis.title.x = element_blank(),
-        axis.title.y = element_text(size=15),
-        strip.text.x = element_text(size = 13),
-        plot.title = element_text(size = 20, hjust = 0.5),
-        panel.border = element_rect(color = "grey90", fill = NA),
-        panel.grid.major.y = element_line(color = "grey90", linetype = 3),
-        panel.grid.major.x = element_blank(),
-        ggh4x.axis.nestline.x = element_line(linetype = c(6,1), linewidth = 1, color = c("black", "darkgrey")),
-        ggh4x.axis.nesttext.x = element_blank()) +
-  scale_colour_manual(values = Pal.plast) +
-  scale_fill_manual(values = Pal.plast) +
-  labs( title = "Richness", fill = "Polymer") +
-  xlab("Polymer") + 
-  ylab("")
-
-P.Richness
-
-### alpha div plot 
-P.Diversity <- ggplot(Diversity.long.c,         #Pick data to plot
-                     aes(x = Material, y = Value, fill = Material, color = Material)) + #Pick factors to use
-  geom_errorbar(aes(ymin=Value-se, ymax=Value+se, width=.1)) +
-  geom_point(size = 3) +
-  facet_nested_wrap(vars(Diversity_Index, timepoint, treatment),
-                    nrow = 1,  axes = "margins", scale = "free_y",
-                    remove_labels = "x", shrink = T) +
-  guides( x = "axis_nested") + 
-  theme_pubclean()+
-  theme(legend.position = "top",
-        legend.key = element_rect(fill = "white", colour = "white"),
-        axis.text.x=element_text(size = 12, angle = 60, hjust = 1), 
-        axis.text.y=element_text(size= 12), 
-        legend.text=element_text(size = 12),
-        legend.title = element_text(size=15, face = "bold"),
-        axis.title.x = element_text(size=15),
-        axis.title.y = element_text(size=15),
-        strip.text.x = element_text(size = 13),
-        plot.title = element_text(size = 20, hjust = 0.5),
-        panel.border = element_rect(color = "grey90", fill = NA),
-        panel.grid.major.y = element_line(color = "grey90", linetype = 3),
-        panel.grid.major.x = element_blank()) +
-  scale_colour_manual(values = Pal.plast) +
-  scale_fill_manual(values = Pal.plast) +
-  labs( title = "Diversity") 
-
-
-P.Diversity
-
-## Make plot with GGPLOT
-P3 <- ggplot(obs.ft.c,         #Pick data to plot
-                     aes(x=interaction(Material, category), y = Observed, fill = Material, color = Material)) + #Pick factors to use
-  geom_errorbar(aes(ymin=Observed-se, ymax=Observed+se, width=.3)) +
- geom_point(size = 4) +
-  facet_nested( ~ timepoint + treatment) +
-  guides( x = "axis_nested") +
-  theme_pubclean()+
-  theme(legend.position = "top",
-        legend.key = element_rect(fill = "white", colour = "white"),
-        axis.text.x=element_text(size = 12, angle = 60, hjust = 1), 
-        axis.text.y=element_text(size= 12), 
-        legend.text=element_text(size = 12),
-        legend.title = element_text(size=15, face = "bold"),
-        axis.title.x = element_text(size=15),
-        axis.title.y = element_text(size=15),
-        panel.border = element_rect(color = "grey90", fill = NA),
-        panel.grid.major.y = element_line(color = "grey90", linetype = 3),
-        panel.grid.major.x = element_blank(),
-        ggh4x.axis.nestline.x = element_line(linetype = c(6,1), linewidth = 1, color = c("black", "darkgrey")),
-        ggh4x.axis.nesttext.x = element_text(angle = 0, color = c("black", "darkgrey"), hjust = 0.5)) +
-  scale_colour_manual(values = Pal.plast) +
-  scale_fill_manual(values = Pal.plast) +
-  ylab("Observed features") +
-  xlab("Polymers") +
-  labs( title = "", color = "Polymers", fill = "Polymers")
-
-P3
-
-editable_graph <- dml(ggobj = P3)
-Observed.Foils <- add_slide(Observed.Foils) 
-Observed.Foils <- ph_with(x = Observed.Foils, editable_graph,location = ph_location_type(type = "body") )
-print(Observed.Foils, target = "../Reports/Observed_Foils_202211.pptx")
-
+# 
+# # select the different columns to obtain the different measures in different columns
+# obs.ft.v <- Alpha.Foils %>%  select(Observed, timepoint:category)
+# chao1.v <- Alpha.Foils %>%  select(Chao1, timepoint:category)
+# Shannon.v <- Alpha.Foils %>%  select(Shannon, timepoint:category)
+# Simpson.v <- Alpha.Foils %>%  select(Simpson, timepoint:category)
+# alpha_div_data  <- Alpha.Foils %>%  select(!Observed:Simpson)
+# head(alpha_div_data)
+# 
+# kt.chao.time <- kruskal.test(chao1$Chao1 ~ timepoint, data = alpha_div_data )
+# kt.chao.timeUV <- kruskal.test(chao1$Chao1 ~ treat_time, data = alpha_div_data )
+# kt.chao.cattimetreat <- kruskal.test(chao1$Chao1 ~ cat_time_treat, data = alpha_div_data )
+# kt.chao.timemat <- kruskal.test(chao1$Chao1 ~ time_mat, data = alpha_div_data )
+# 
+# pt.chao.timeUV <- pairwise.wilcox.test(chao1$Chao1, 
+#                      g = alpha_div_data$treat_time,
+#                      p.adjust.method = 'BH')
+# 
+# pt.chao.time <- pairwise.wilcox.test(chao1$Chao1, 
+#                                        g = alpha_div_data$timepoint,
+#                                        p.adjust.method = 'BH')
+# 
+# 
+# pt.chao.timemat<- pairwise.wilcox.test(chao1$Chao1, 
+#                                        g = alpha_div_data$time_mat,
+#                                        p.adjust.method = 'BH')
+# 
+# kt.simp.time <- kruskal.test(Simpson$Simpson ~ timepoint, data = alpha_div_data )
+# kt.simp.timeUV <- kruskal.test(Simpson$Simpson ~ treat_time, data = alpha_div_data )
+# kt.simp.cattimetreat <- kruskal.test(Simpson$Simpson ~ cat_time_treat, data = alpha_div_data )
+# kt.simp.time_mat <- kruskal.test(Simpson$Simpson ~ time_mat, data = alpha_div_data )
+# 
+# pt.simp.timeUV <- pairwise.wilcox.test(Simpson$Simpson, 
+#                                        g = alpha_div_data$treat_time,
+#                                        p.adjust.method = 'BH')
+# 
+# pt.simp.time <- pairwise.wilcox.test(Simpson$Simpson, 
+#                                      g = alpha_div_data$timepoint,
+#                                      p.adjust.method = 'BH')
 ####_______________________________________________________________________________________#%###
 ####           Chao1 Index    ####
 ####_______________________________________________________________________________________#%###
-Chao1.Foils<- read_pptx()
-Chao1.Foils <- read_pptx("../Reports/Chao1_index_Foils.pptx")
-
 ## Make plot with GGPLOT
 Chao1 <- ggplot(chao1.c,         #Pick data to plot
                      aes(x=interaction(Material, category), y = Chao1, fill = Material, color = Material)) + #Pick factors to use
@@ -424,7 +309,7 @@ Chao1 <- ggplot(chao1.c,         #Pick data to plot
         axis.text.y=element_text(size= 15), 
         legend.text=element_text(size = 15),
         legend.title = element_text(size=15, face = "bold"),
-        axis.title.y = element_text(size= 20),
+        axis.title.y = element_text(size= 17),
         strip.text.x = element_text(size = 17),
         panel.border = element_rect(color = "grey90", fill = NA),
         panel.grid.major.y = element_line(color = "grey90", linetype = 3),
@@ -438,17 +323,9 @@ Chao1 <- ggplot(chao1.c,         #Pick data to plot
 
 Chao1
 
-editable_graph <- dml(ggobj = Chao1.Plot)
-Chao1.Foils <- add_slide(Chao1.Foils) 
-Chao1.Foils <- ph_with(x = Chao1.Foils, editable_graph,location = ph_location_type(type = "body") )
-print(Chao1.Foils, target = "../Reports/Chao1_index_Foils.pptx")
-
 ####_______________________________________________________________________________________#%###
 ####           Simpson   ####
 ####_______________________________________________________________________________________#%###
-Simpson.Foils <- read_pptx()
-Simpson.Foils<- read_pptx("../Reports/Simpson_evenness_Foils.pptx")
-
 Simpson <- ggplot(Simpson.c,         #Pick data to plot
                  aes(x=interaction(Material, category), y = Simpson, fill = Material, color = Material)) + #Pick factors to use
   geom_errorbar(aes(ymin=Simpson-se, ymax=Simpson+se, width=.3)) +
@@ -462,7 +339,7 @@ Simpson <- ggplot(Simpson.c,         #Pick data to plot
         axis.text.y=element_text(size= 15), 
         legend.text=element_text(size = 15),
         legend.title = element_text(size=15, face = "bold"),
-        axis.title.y = element_text(size= 20),
+        axis.title.y = element_text(size= 17),
         strip.text.x = element_text(size = 17),
         panel.border = element_rect(color = "grey90", fill = NA),
         panel.grid.major.y = element_line(color = "grey90", linetype = 3),
@@ -475,21 +352,11 @@ Simpson <- ggplot(Simpson.c,         #Pick data to plot
   ylab("Gini-Simpson Index") +
   labs( title = "", color = "Polymers", fill = "Polymers")
 
-  
 Simpson
-
-editable_graph <- dml(ggobj = plotP1)
-Simpson.Foils <- add_slide(Simpson.Foils ) 
-Simpson.Foils <- ph_with(x = Simpson.Foils , editable_graph,location = ph_location_type(type = "body") )
-print(Simpson.Foils , target = "../Reports/Simpson_evenness_Foils.pptx")
-
 
 ####_______________________________________________________________________________________#%###
 ####           Shanon ####
 ####_______________________________________________________________________________________#$###
-Shannon.Foils <- read_pptx()
-Shannon.Foils <- read_pptx("../Reports/Shannon_Eukaryotes.pptx")
-
 Shannon <- ggplot(Shannon.c,         #Pick data to plot
                  aes(x=interaction(Material, category), y = Shannon, fill = Material, color = Material)) + #Pick factors to use
   geom_errorbar(aes(ymin=Shannon-se, ymax=Shannon+se, width=.3)) +
@@ -503,7 +370,7 @@ Shannon <- ggplot(Shannon.c,         #Pick data to plot
         axis.text.y=element_text(size= 15), 
         legend.text=element_text(size = 15),
         legend.title = element_text(size=18),
-        axis.title.y = element_text(size= 20),
+        axis.title.y = element_text(size= 17),
         strip.text.x = element_text(size = 17),
         panel.border = element_rect(color = "grey90", fill = NA),
         panel.grid.major.y = element_line(color = "grey90", linetype = 3),
@@ -519,10 +386,6 @@ Shannon <- ggplot(Shannon.c,         #Pick data to plot
 
 Shannon
 
-editable_graph <- dml(ggobj = plotP2)
-Shannon.Foils <- add_slide(Shannon.Foils) 
-Shannon.Foils <- ph_with(x = Shannon.Foils, editable_graph,location = ph_location_type(type = "body") )
-print(Shannon.Foils, target = "../Reports/Shannon_Eukaryotes.pptx")
 
 legend.a <- get_legend(Shannon+
                        theme(legend.direction = "horizontal",
@@ -573,7 +436,7 @@ Chao1 <- ggplot(Alpha.Foils,          #Pick data to plot
 Simpson
 
 legend.a <- get_legend(Shannon+
-                         theme(legend.direction = "vertical",
+                         theme(legend.direction = "horizontal",
                                legend.title.align = 0.5))
 
 

@@ -284,7 +284,7 @@ write.table(T1.T6, "../SIMPER/T1.T6.top10.txt",
 ###%#______________________________________#%###
 #### Make Heatmap plots Genera             #####
 ###%#______________________________________#%###
-###### Import datafiles ####
+##### Import datafiles ####
 Ungrouped <- read.delim("../SIMPER_202303/Simper_Foils_genus_Ungrouped.txt", header = T, row.names = NULL, na.strings = c(" "))
 T1.T6 <- read.delim("../SIMPER_202303/SIMPER_genus_timepoints_timepoints_alltime_total.txt", header = T, row.names = NULL, na.strings = c(" "))
 T6.treat <- read.delim("../SIMPER_202303/SIMPER_genus_treat_time_treat_time_UV_T6_noUV_T6.txt", header = T, row.names = NULL, na.strings = c(" "))
@@ -313,7 +313,7 @@ PS.PP <- read.delim("../SIMPER_202303/SIMPER_genus_polymers_PS_PP.txt", header =
 hcb <- as.character(read_lines("../data/Hydrocarbon_degraders_sorted_22_08.txt"))
 pdb <- as.character(read_lines("../data/PlasticDB_Prokaryotic_genera.txt"))
 
-#Bund into dataframe
+#Bind into dataframe
 simper.df <- bind_rows("Day1 vs Day6" = T1.T6, 
                        "Day6 UV vs NoUV" = T6.treat,
                        "UV Day1 vs Day6" =  UV.T1.T6,
@@ -339,7 +339,7 @@ simper.df <- bind_rows("Day1 vs Day6" = T1.T6,
                        "PS vs PP"= PS.PP,  
                        .id = "test") 
 
-
+##### Filter data and transform dataframe  ####
 #Filter the df on the first XX species based on the cumsum values. 
 simper.cumsum <- simper.df %>%  select(test, species, average, sd, ord, cusum) %>% # select relevant columns
   filter(!species %in% c("NA")) %>%  #remove NA genera 
@@ -373,13 +373,15 @@ simper.diffsum.xp.symb <- simper.diffsum.xp %>% mutate(species = if_else(
   if_else(species %in% pdb, paste("#", sep = "_", species),
           if_else(species %in% hcb, paste("+", sep = "_", species), species))))
 
+##### Make Plots ####
+
 viridis <- c("#fde725", "#b5de2b", "#6ece58", "#35b779", "#1f9e89", "#26828e", "#31688e", "#3e4989", "#482878")
 
 Heatmap <- ggplot(simper.diffsum.xp.symb, # plot expanded df
                   aes(y=fct_reorder(species,cusum), x = test)) + #pick values to plot, in this case species vs test, and average dissimilarity as fill. 
   geom_tile(colour = "grey30", fill = 'white') + #color of tile borders
   geom_text(aes(label =  sprintf("%0.1f", round(100 * contribution, digits = 1))), size = 5) + #geom text, the amount of digits
-  scale_fill_gradientn(name  = "Cumulative Contribution (%)",  colours = viridis, limits = c(0,0.301), na.value ="#bbbbbb", labels = scales::percent) + #set-up gradient, in this case magma from viridis package
+  # scale_fill_gradientn(name  = "Cumulative Contribution (%)",  colours = viridis, limits = c(0,0.301), na.value ="#bbbbbb", labels = scales::percent) + #set-up gradient, in this case magma from viridis package
   theme_classic() +
   scale_x_discrete(limits = c( "Day1 vs Day6", "UV Day1 vs Day6", "noUV Day1 vs Day6", "C-C backbone Day 1 vs Day6", "H-A backbone Day 1 vs Day6",   
                                "C-C vs H-A backbone" , "PE vs Nylon", "PE vs PET", "PP vs PET", "PS vs PE", "PS vs PP", 
@@ -387,8 +389,8 @@ Heatmap <- ggplot(simper.diffsum.xp.symb, # plot expanded df
                                "Day 6 PE vs Nylon", "Day 6 PE vs PET", "Day 6 PS vs Nylon", 
                                "Day 6 PS vs PE",  "Day 6 PS vs PP" )) +
   theme(
-    axis.text.x=element_text(size = 12, angle = 60, hjust = 1), 
-    axis.text.y=element_text(size= 12, face = "italic", color = "black"), 
+    axis.text.x=element_text(size = 14, angle = 60, hjust = 1), 
+    axis.text.y=element_text(size= 14, face = "italic", color = "black"), 
     legend.text=element_text(size = 11),
     legend.title = element_text(size=11),
     axis.title.x = element_blank(),
@@ -428,9 +430,7 @@ Table <- ggplot(Simper.summ.p, # plot expanded df
                    labels = c( "Cumulative difference\n caused by 10 genera", "Average Dissimilarity" ))+
   theme(
     axis.text.x=element_blank(), 
-    axis.text.y=element_text(size = 12, face = "bold", color = "black"), 
-    legend.text=element_text(size = 10),
-    legend.title = element_text(size=11),
+    axis.text.y=element_text(size = 14, face = "bold", color = "black"), 
     axis.title.x = element_blank(),
     axis.title.y = element_blank(),
     #strip.text.x = element_text(size = 15),
