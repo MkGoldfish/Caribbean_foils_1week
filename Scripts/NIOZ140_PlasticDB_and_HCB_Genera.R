@@ -238,7 +238,7 @@ HCB_bubble <- ggplot(HCB_genera_plasts, aes(x= interaction(Material, category), 
                 )) + 
   theme_minimal()+
   theme(
-    axis.text.x=element_text(size = 14, angle = 60, hjust = 1), 
+    axis.text.x=element_text(size = 13, angle = 60, hjust = 1), 
     axis.text.y=element_text(size= 13 ), 
     legend.text=element_text(size = 12),
     legend.title = element_text(size = 14),
