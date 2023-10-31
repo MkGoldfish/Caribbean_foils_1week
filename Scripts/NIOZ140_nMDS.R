@@ -97,19 +97,19 @@ pal.uv <- c("#999933", "#CC6677")
 ###%#______________________________________________________________________________________#%###
 ####                NMDS based on previously calculated relative abundance data                 
 ###%#______________________________________________________________________________________#%###
-ASV.RA.metadata <- t2 %>% select(Sample, Description, timepoint, Material, treatment, surface, time_UV) %>% 
+ASV.RA.metadata <- t2 %>% dplyr::select(Sample, Description, timepoint, Material, treatment, surface, time_UV) %>% 
   distinct()  %>% arrange(Sample) %>% column_to_rownames(var = "Sample")
 head(ASV.RA.metadata)
 
 # Extract RA data from tidy tibble 
 # Filter out all Abundance = 0 values, since this fucks up the standardization
-ASV.RA.count <-  t2 %>%  select(Sample, OTU, Sample_rel_abund)%>% filter (Sample_rel_abund > 0) %>%
+ASV.RA.count <-  t2 %>%  dplyr::select(Sample, OTU, Sample_rel_abund)%>% filter (Sample_rel_abund > 0) %>%
   distinct() 
 head(ASV.RA.count)
 
 # Transform count table to get samples per row and ASV per column
 # Not per se necessary, but this means we can use standard MARGIN in transfromation and ordination
-ASV.RA.count.t <- ASV.RA.count %>% select(Sample, OTU, Sample_rel_abund)  %>% mutate(across(c(OTU),factor)) %>% 
+ASV.RA.count.t <- ASV.RA.count %>% dplyr::select(Sample, OTU, Sample_rel_abund)  %>% mutate(across(c(OTU),factor)) %>% 
   pivot_wider(names_from = OTU, values_from = Sample_rel_abund) %>% replace(is.na(.), 0)  %>% arrange(Sample) %>% 
   column_to_rownames(var = "Sample") %>% as.data.frame() %>% sqrt()
 
@@ -152,25 +152,25 @@ nmds_plot_ASV =
   # Create axis based on both NMDS values in 2 dimensions
   ggplot(data.scores, aes(x = NMDS1, y = NMDS2)) +  
   #Plot the points of the NMDS, select what you want as shape and color from metadata
-  geom_point(size = 6, aes(shape = treatment, fill = Timepoint, stroke = 1))+ 
-  geom_text_repel(aes(label= Material), size = 5, max.overlaps = 25) +
-  annotate("text", x = -1.5, y = 1.55, label = paste0("k=2; stress= ", format(nMDS.stress, digits = 4)), hjust = 0, size = 4) +
+  geom_point(size = 3.5, aes(shape = treatment, fill = Timepoint, stroke = 0.75))+ 
+  geom_text_repel(aes(label= Material), size = 3, max.overlaps = 25) +
+  annotate("text", x = -1.6, y = 1.55, label = paste0("k=2; stress= ", format(nMDS.stress, digits = 4)), hjust = 0, size = 3.5) +
   theme_pubr() +
-  theme(axis.text.y = element_text(size = 15),
-        axis.text.x = element_text(size = 15),
-        legend.text = element_text(size = 15),
+  theme(axis.text.y = element_text(size = 10),
+        axis.text.x = element_text(size = 10),
+        legend.text = element_text(size = 10),
         legend.position="right", legend.box = "horizontal", 
-        axis.title.y = element_text(size = 16),
-        axis.title.x = element_text(size = 16),
+        axis.title.y = element_text(size = 11),
+        axis.title.x = element_text(size = 12),
         axis.line = element_blank(), 
-        legend.title = element_text(size = 18),
+        legend.title = element_text(size = 12),
         panel.background = element_blank(), panel.border = element_rect(colour = "darkgrey", fill = NA, linewidth = 1.2),
         legend.key=element_blank()
         ) +
   # Set axislabels and title 
   labs( title = "")  + 
   stat_ellipse(type = "t" , level = 0.5,
-               geom = "path", linewidth = 1.5,
+               geom = "path", linewidth = 1,
                aes(color = Timepoint,
                    linetype = Ti.UV),
                show.legend = T) +
@@ -178,8 +178,8 @@ nmds_plot_ASV =
   scale_shape_manual(values = c(21,24)) +
   scale_fill_manual(values = pal.time) +
   scale_color_manual(values = pal.time) +
-  guides(fill = guide_legend(override.aes = list( shape = 22, linetype = NULL)),
-         shape = guide_legend(title = "Treatment", override.aes = list(fill = "black", linetype = NULL)),
+  guides(fill = guide_legend(override.aes = list( shape = 22, linetype = NULL, size = 4.5)),
+         shape = guide_legend(title = "Treatment", override.aes = list(fill = "black", linetype = NULL, size = 4.5)),
          linetype = guide_legend(override.aes = list(color = c("#44AA99","#44AA99", "#882255", "#882255"))))
 
 
@@ -188,9 +188,10 @@ nmds_plot_ASV
 
 legend.b <- get_legend(nmds_plot_ASV +
                        theme(legend.direction = "vertical",
-                             legend.title.align = 0.5))
-
-
+                             legend.position = "bottom",
+                             legend.justification = "center",
+                             legend.spacing.x = unit(0.5, 'cm'),
+                             legend.spacing.y = unit(0.1, 'cm')))
 
 plot_grid(Chao1 + theme(legend.position ="none"),
           Simpson + theme(legend.position ="none"),
@@ -202,9 +203,11 @@ plot_grid(Chao1 + theme(legend.position ="none"),
           align = 'v',
           axis = "l",
           labels = c("A", "B", "C", "D"),
-          label_size = 15,
-          rel_heights = c(1,1,0.3),
+          label_size = 12,
+          rel_heights = c(1,1,0.35),
           rel_widths = c(1,1))
+
+ggsave("Alpha_Beta_div_grid_3.tiff", width = 26, height  = 22, unit = "cm", dpi = 500)
 
 # See groupings in the plot?
 # Maybe add elipses

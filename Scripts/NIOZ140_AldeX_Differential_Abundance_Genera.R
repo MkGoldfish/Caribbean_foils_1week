@@ -471,7 +471,7 @@ time_tests.subs.symb$Genus <- factor(time_tests.subs.symb $Genus, levels=rev(sor
 
 Heatmap.all <- ggplot(time_tests.subs.symb , aes(y=Genus, x = test, fill = effect )) +
   geom_tile(color = "grey50")+
-  geom_text(aes(label = ifelse(is.na(effect), "", sprintf("%0.2f", round(effect, digits = 2))) , size = 3.5)) +
+  geom_text(aes(label = ifelse(is.na(effect), "", sprintf("%0.2f", round(effect, digits = 2))) , size = 3)) +
   scale_fill_gradientn(name  = "Effect size", limits = c(-3, 3), colours = c( '#00767B', '#238F9D', '#42A7C6', '#60BCE9', '#9DCCEF',  
                                                                               '#DEE6E7', '#ECEADA', '#F9D576', '#FFB954', '#FD9A44', 
                                                                               '#F57634', '#E94C1F', '#D11807'), na.value = "#bbbbbb") +
@@ -489,8 +489,8 @@ Heatmap.all <- ggplot(time_tests.subs.symb , aes(y=Genus, x = test, fill = effec
                                                               color =  "grey30", by_layer_y = F))) + 
   guides(y="axis_nested") +
   theme(
-    axis.text.x=element_text(size = 15, angle = 45, hjust = 1),  
-    axis.text.y=element_text(size= 13, face = "italic"), 
+    axis.text.x=element_text(size = 12.5, angle = 45, hjust = 1),  
+    axis.text.y=element_text(size= 13.5, face = "italic"), 
     legend.text=element_text(size = 12),
     legend.title = element_text(size=15),
     axis.title.x = element_blank(),
@@ -510,6 +510,10 @@ Heatmap.all <- ggplot(time_tests.subs.symb , aes(y=Genus, x = test, fill = effec
   xlab(label = "Pairwise test")
 
 Heatmap.all
+
+ggsave("ALDEX_2.tiff", width = 17, height  = 30, unit = "cm", dpi = 500)
+
+
 #### Heatmap qvalues ####
 # pivot data longer to be able to plot q-values
 q_vals = time_tests.xp %>% pivot_longer(cols = we.eBH:wi.eBH,

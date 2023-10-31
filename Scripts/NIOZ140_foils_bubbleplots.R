@@ -6,17 +6,14 @@ setwd("C:/Users/mgoudriaan/Documents/R-files/Projects/NIOZ140-foils/R-project-fi
 ####                   Load libraries                                                      ####
 ###%#_______________________________________________________________________________________#%###
 library(devtools)
-library(phyloseq)
-library(tidyverse)
 library(ggpubr)
 library(stringr)
 library(ggh4x)
-library(rvg)
-library(officer)
 library("ggthemes")
 library("stringr")
 library(cowplot)
 library (emojifont)
+library(tidyverse)
 
 set.seed(42)
 ###%#_______________________________________________________________________________________#%###
@@ -74,7 +71,7 @@ Genus <- t2 %>% dplyr::select(timepoint, Material, treatment, surface, Descripti
 Genus <- Genus %>%  mutate(Genus = ifelse(Genus == "Prevotella_7", "Prevotella", Genus))
 
 #Cout how many unique genera we have. 
-Genus  %>% select(Genus) %>%  unique() %>% count()
+Genus  %>% dplyr::select(Genus) %>%  unique() %>% count()
 
 # select top-5 genera per sample Genera for plotting
 Genus_top <- Genus %>% dplyr::select(Description, Genus, Genus_rep_rel_abund) %>% 
@@ -130,10 +127,10 @@ top_genus$Genus <- factor(top_genus$Genus, levels=rev(sort(unique(top_genus$Genu
 top_genus <- top_genus %>% arrange(Order)
 
 Genus_bubble <- ggplot(top_genus,aes(x=interaction(Material, category),y= Genus)) +
-  geom_point(aes(size=Genus_rep_rel_abund, fill = factor(Material)), shape = "circle filled", stroke = 1, colour = "black") +
+  geom_point(aes(size=Genus_rep_rel_abund, fill = factor(Material)), shape = "circle filled", stroke = 0.5, colour = "black") +
   scale_fill_manual(values = Pal.plast) +
-  scale_size(range = c(2,9.5))+
-  guides( x = "axis_nested",  fill = guide_legend(override.aes = list(size = 10))) +
+  scale_size(range = c(1.5,6.5))+
+  guides( x = "axis_nested",  fill = guide_legend(override.aes = list(size = 5))) +
   ylab("") +
   xlab("") +  
   facet_nested(Phylum + Order ~ timepoint + treatment, drop = T, 
@@ -143,30 +140,38 @@ Genus_bubble <- ggplot(top_genus,aes(x=interaction(Material, category),y= Genus)
                strip = strip_nested(
                  background_y =  elem_list_rect(color = "grey25",
                                                 fill = "white", linewidth = 1),
-                 text_y = elem_list_text(size = 13, angle = 0, 
+                 text_y = elem_list_text(size = 53, angle = 0, 
                                          color = "grey25", by_layer_y = F),
-                 background_x = (element_rect(fill = "grey90", color = "grey90", linetype = 0))
+                 background_x = (element_rect(fill = "grey90", color = "grey90", linetype = 0)),
+                 text_x = elem_list_text(size = 50)
                )) + 
   theme_minimal()+
   theme(
-    axis.text.x=element_text( size = 14, angle = 60, hjust = 1), 
-    axis.text.y=element_text(size= 13, face = "italic", color = "black"), 
-    legend.text=element_text(size = 12),
-    legend.title = element_text(size=13),
+    axis.text.x=element_text(size = 47, angle = 60, hjust = 1), 
+    axis.text.y=element_text(size= 47, face = 'italic'), 
+    legend.text=element_text(size = 47),
+    legend.title = element_text(size = 49, face = 'bold'),
+    legend.position = "bottom",
+    legend.justification = "center",
+    legend.spacing.x = unit(0.1, 'cm'),
+    legend.box = "vertical", 
     axis.title.x = element_text(size=13),
     axis.title.y = element_text(size=13),
-    strip.text.x = element_text(size = 13),
+    strip.text.x = element_text(size = 11),
     plot.title = element_text(size = 20, hjust = 0.5),
     panel.border = element_rect(color = "grey90", fill = NA),
+    panel.spacing.x = unit(1, 'pt'),
     ggh4x.axis.nestline.x = element_line(linetype = c(6,1), linewidth = 1, color = c("black", "darkgrey")),
     ggh4x.axis.nesttext.x = element_blank(),
     panel.grid.major.y = element_line(color = "grey90", linetype = 3),
-    panel.grid.major.x = element_blank(),
-    legend.position = "bottom") +
+    panel.grid.major.x = element_blank()
+    ) +
   labs(title = "", subtitle = "",
        fill = "Polymer", size = "Relative Abundance") 
 
 Genus_bubble
+
+ggsave("Genus_bubble.tiff", width = 25, height  = 19, unit = "cm", dpi = 500, bg = 'white')
 
 ####____Orders_per_phylum_nested_facets/axes_______________________________________####
 Orders <-t2  %>%  dplyr::select(timepoint, Material, treatment, surface, 

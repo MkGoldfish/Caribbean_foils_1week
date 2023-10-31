@@ -219,10 +219,10 @@ HCB_genera_plasts <- HCB_genera_plasts %>% mutate(Genus.pol =
 # Bubbleplot with top n HCB crossection of all samples
 HCB_bubble <- ggplot(HCB_genera_plasts, aes(x= interaction(Material, category), y= fct_reorder(Genus.pol,Genus_rep_rel_abund) )) +
   geom_point(aes(size=Genus_rep_rel_abund, fill = factor(Material)), 
-             shape = "circle filled", stroke = 1, colour = "black") +
+             shape = "circle filled", stroke = 0.5, colour = "black") +
   scale_fill_manual(values = Pal.plast) +
-  scale_size(range = c(2,5))+
-  guides(y="axis_nested", x = "axis_nested", fill = guide_legend(override.aes = list(size = 10))) +
+  scale_size(range = c(1.5,4.5))+
+  guides(y="axis_nested", x = "axis_nested", fill = guide_legend(override.aes = list(size = 5))) +
   ylab("") +
   xlab("") +  
   facet_nested( Degrading ~ timepoint + treatment, drop = T,
@@ -232,17 +232,20 @@ HCB_bubble <- ggplot(HCB_genera_plasts, aes(x= interaction(Material, category), 
                 strip = strip_nested(
                   background_y =  elem_list_rect(color = c("grey10", "grey50", "grey30"),
                                                  fill = rep_len("white", 3),  linewidth = 1),
-                  text_y = elem_list_text(size = rep_len(13,3), angle = rep_len(90,3), 
+                  text_y = elem_list_text(size = rep_len(47,3), angle = rep_len(90,3), 
                                           color = c("grey10", "grey50", "grey30"), by_layer_y = F),
-                  background_x = (element_rect(fill = "grey90", color = "grey90", linetype = 0))
+                  background_x = (element_rect(fill = "grey90", color = "grey90", linetype = 0)),
+                  text_x = elem_list_text(size =47)
                 )) + 
   theme_minimal()+
   theme(
-    axis.text.x=element_text(size = 13, angle = 60, hjust = 1), 
-    axis.text.y=element_text(size= 13 ), 
-    legend.text=element_text(size = 12),
-    legend.title = element_text(size = 14),
+    axis.text.x=element_text(size = 42, angle = 60, hjust = 1), 
+    axis.text.y=element_text(size= 42), 
+    legend.text=element_text(size = 40),
+    legend.title = element_text(size = 45, face = 'bold'),
     legend.position = "bottom",
+    legend.justification = "center",
+    legend.spacing.x = unit(0.1, 'cm'),
     legend.box = "vertical", 
     axis.title.x = element_text(size = 13),
     axis.title.y = element_text(size = 13),
@@ -251,7 +254,7 @@ HCB_bubble <- ggplot(HCB_genera_plasts, aes(x= interaction(Material, category), 
     strip.text.y = element_text(angle = 0),
     plot.title = element_text(size = 20, hjust = 0),
     panel.border = element_rect(color = "grey", fill = NA),
-      ggh4x.axis.nestline.x = element_line(linetype = c(6,1), linewidth = 1, color = c("black", "darkgrey")),
+    ggh4x.axis.nestline.x = element_line(linetype = c(6,1), linewidth = 1, color = c("black", "darkgrey")),
     ggh4x.axis.nesttext.x = element_blank(),
     panel.grid.major.y = element_line(color = "grey90", linetype = 3),
     panel.grid.major.x = element_blank()) +
@@ -259,6 +262,8 @@ HCB_bubble <- ggplot(HCB_genera_plasts, aes(x= interaction(Material, category), 
        subtitle = "") 
 
 HCB_bubble
+
+ggsave("HCB_PDB_bubble.tiff", width = 17, height  = 20.5, unit = "cm", dpi = 500, bg='white')
 
 ### Barplot PDB-only genera ####
 Genus.plast <- Genus_plastic

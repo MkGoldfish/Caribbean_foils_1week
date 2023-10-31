@@ -191,13 +191,13 @@ Alpha.Foils <- Alpha.Foils %>%
 
 #Two options for plotting
 #1, select the different columns to obtain the different measures in different columns
-obs.ft <- Alpha.Foils %>%  select(Sample, Observed, timepoint:category)
-chao1 <- Alpha.Foils %>%  select(Sample, Chao1, timepoint:category)
-Shannon <- Alpha.Foils %>%  select(Sample, Shannon, timepoint:category)
-Simpson <- Alpha.Foils %>%  select(Sample, Simpson, timepoint:category)
+obs.ft <- Alpha.Foils %>%  dplyr::select(Sample, Observed, timepoint:category)
+chao1 <- Alpha.Foils %>%  dplyr::select(Sample, Chao1, timepoint:category)
+Shannon <- Alpha.Foils %>%  dplyr::select(Sample, Shannon, timepoint:category)
+Simpson <- Alpha.Foils %>%  dplyr::select(Sample, Simpson, timepoint:category)
 
 #2, transform the complete df in long format
-Alpha.foils.long <- Alpha.Foils %>% select(!se.chao1) %>%  pivot_longer(cols = c("Observed", "Chao1", "Shannon", "Simpson"), names_to = "Diversity_Index", 
+Alpha.foils.long <- Alpha.Foils %>% dplyr::select(!se.chao1) %>%  pivot_longer(cols = c("Observed", "Chao1", "Shannon", "Simpson"), names_to = "Diversity_Index", 
                                                   values_to = "Value")
 
 
@@ -299,18 +299,18 @@ Diversity.long.c <- Alpha.foils.long.c %>% filter(Diversity_Index %in% c("Shanno
 Chao1 <- ggplot(chao1.c,         #Pick data to plot
                      aes(x=interaction(Material, category), y = Chao1, fill = Material, color = Material)) + #Pick factors to use
   geom_errorbar(aes(ymin=Chao1-se, ymax=Chao1+se, width=.3)) +
-  geom_point(size = 4) +
+  geom_point(size = 2.5) +
   facet_nested( ~ timepoint + treatment) +
-  guides( x = "axis_nested") +
+  guides( x = "axis_nested", color = guide_legend(override.aes = list(size = 3))) +
   theme_pubclean()+
   theme(legend.position = "top",
         legend.key = element_rect(fill = "white", colour = "white"),
-        axis.text.x=element_text(size = 15, angle = 60, hjust = 1), 
-        axis.text.y=element_text(size= 15), 
-        legend.text=element_text(size = 15),
-        legend.title = element_text(size=15, face = "bold"),
-        axis.title.y = element_text(size= 16),
-        strip.text.x = element_text(size = 17),
+        axis.text.x=element_text(size = 10, angle = 60, hjust = 1), 
+        axis.text.y=element_text(size= 11), 
+        legend.text=element_text(size = 10),
+        legend.title = element_text(size=12, face = "bold"),
+        axis.title.y = element_text(size= 12),
+        strip.text.x = element_text(size = 10),
         panel.border = element_rect(color = "grey90", fill = NA),
         panel.grid.major.y = element_line(color = "grey90", linetype = 3),
         panel.grid.major.x = element_blank(),
@@ -329,18 +329,18 @@ Chao1
 Simpson <- ggplot(Simpson.c,         #Pick data to plot
                  aes(x=interaction(Material, category), y = Simpson, fill = Material, color = Material)) + #Pick factors to use
   geom_errorbar(aes(ymin=Simpson-se, ymax=Simpson+se, width=.3)) +
-  geom_point(size = 4) +
+  geom_point(size = 2.5) +
   facet_nested( ~ timepoint + treatment) +
-  guides( x = "axis_nested") +
+  guides( x = "axis_nested", color = guide_legend(override.aes = list(size = 3))) +
   theme_pubclean()+
   theme(legend.position = "top",
         legend.key = element_rect(fill = "white", colour = "white"),
-        axis.text.x=element_text(size = 15, angle = 60, hjust = 1), 
-        axis.text.y=element_text(size= 15), 
-        legend.text=element_text(size = 15),
-        legend.title = element_text(size=15, face = "bold"),
-        axis.title.y = element_text(size= 16),
-        strip.text.x = element_text(size = 17),
+        axis.text.x=element_text(size = 10, angle = 60, hjust = 1), 
+        axis.text.y=element_text(size= 11), 
+        legend.text=element_text(size = 10),
+        legend.title = element_text(size = 12, face = "bold"),
+        axis.title.y = element_text(size= 12),
+        strip.text.x = element_text(size = 10),
         panel.border = element_rect(color = "grey90", fill = NA),
         panel.grid.major.y = element_line(color = "grey90", linetype = 3),
         panel.grid.major.x = element_blank(),
@@ -360,18 +360,18 @@ Simpson
 Shannon <- ggplot(Shannon.c,         #Pick data to plot
                  aes(x=interaction(Material, category), y = Shannon, fill = Material, color = Material)) + #Pick factors to use
   geom_errorbar(aes(ymin=Shannon-se, ymax=Shannon+se, width=.3)) +
-  geom_point(size = 4) +
+  geom_point(size = 2.5) +
   facet_nested( ~ timepoint + treatment) +
-  guides( x = "axis_nested") +
+  guides( x = "axis_nested", color = guide_legend(override.aes = list(size = 3))) +
   theme_pubclean()+
   theme(legend.position = "bottom",
         legend.key = element_rect(fill = "white", colour = "white"),
-        axis.text.x=element_text(size = 15, angle = 60, hjust = 1), 
-        axis.text.y=element_text(size= 15), 
-        legend.text=element_text(size = 15),
-        legend.title = element_text(size=18),
-        axis.title.y = element_text(size= 16),
-        strip.text.x = element_text(size = 17),
+        axis.text.x=element_text(size = 10, angle = 60, hjust = 1), 
+        axis.text.y=element_text(size= 11), 
+        legend.text=element_text(size = 10),
+        legend.title = element_text(size = 12),
+        axis.title.y = element_text(size= 12),
+        strip.text.x = element_text(size = 10),
         panel.border = element_rect(color = "grey90", fill = NA),
         panel.grid.major.y = element_line(color = "grey90", linetype = 3),
         panel.grid.major.x = element_blank(),
@@ -389,7 +389,10 @@ Shannon
 
 legend.a <- get_legend(Shannon+
                        theme(legend.direction = "horizontal",
-                             legend.title.align = 0.5))
+                             legend.position = "bottom",
+                             legend.justification = "center",
+                             legend.spacing.x = unit(0.1, 'cm'),
+                             legend.spacing.y = unit(0.15, 'cm')))
 
 
 
@@ -428,7 +431,7 @@ Chao1 <- ggplot(Alpha.Foils,          #Pick data to plot
         panel.grid.major.y = element_line(color = "grey90", linetype = 3),
         panel.grid.major.x = element_blank()) +
   facet_grid( ~ timepoint) +
-  guides(alpha = "none") +
+  guides(alpha = "none", color = guide_legend(override.aes = size = 4)) +
   xlab("Treatment") +
   scale_colour_manual(values = pal.uv) +
   scale_fill_manual(values = pal.uv) 

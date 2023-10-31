@@ -380,7 +380,7 @@ viridis <- c("#fde725", "#b5de2b", "#6ece58", "#35b779", "#1f9e89", "#26828e", "
 Heatmap <- ggplot(simper.diffsum.xp.symb, # plot expanded df
                   aes(y=fct_reorder(species,cusum), x = test)) + #pick values to plot, in this case species vs test, and average dissimilarity as fill. 
   geom_tile(colour = "grey30", fill = 'white') + #color of tile borders
-  geom_text(aes(label =  sprintf("%0.1f", round(100 * contribution, digits = 1))), size = 5) + #geom text, the amount of digits
+  geom_text(aes(label =  sprintf("%0.1f", round(100 * contribution, digits = 1))), size = 10) + #geom text, the amount of digits
   # scale_fill_gradientn(name  = "Cumulative Contribution (%)",  colours = viridis, limits = c(0,0.301), na.value ="#bbbbbb", labels = scales::percent) + #set-up gradient, in this case magma from viridis package
   theme_classic() +
   scale_x_discrete(limits = c( "Day1 vs Day6", "UV Day1 vs Day6", "noUV Day1 vs Day6", "C-C backbone Day 1 vs Day6", "H-A backbone Day 1 vs Day6",   
@@ -389,8 +389,8 @@ Heatmap <- ggplot(simper.diffsum.xp.symb, # plot expanded df
                                "Day 6 PE vs Nylon", "Day 6 PE vs PET", "Day 6 PS vs Nylon", 
                                "Day 6 PS vs PE",  "Day 6 PS vs PP" )) +
   theme(
-    axis.text.x=element_text(size = 14, angle = 60, hjust = 1), 
-    axis.text.y=element_text(size= 14, face = "italic", color = "black"), 
+    axis.text.x=element_text(size = 30, angle = 60, hjust = 1), 
+    axis.text.y=element_text(size= 28, face = "italic", color = "black"), 
     legend.text=element_text(size = 11),
     legend.title = element_text(size=11),
     axis.title.x = element_blank(),
@@ -418,7 +418,7 @@ Simper.summ.p <- Simper.summ %>% pivot_longer(cols = !Test,
 Table <- ggplot(Simper.summ.p, # plot expanded df
                 aes(y=variable, x = Test, fill = value )) + #pick values to plot, in this case species vs test, and average dissimilarity as fill. 
   geom_tile(colour = "grey50", fill = "white") + #color of tile borders
-  geom_text(aes(label = sprintf("%0.1f", round(100 * value, digits = 1))), size = 5, fontface = 'bold') + #geom text, the amount of digits
+  geom_text(aes(label = sprintf("%0.1f", round(100 * value, digits = 1))), size = 10, fontface = 'bold') + #geom text, the amount of digits
   theme_classic() +
   scale_x_discrete(limits = c( "T1.T6", "UV.T1.T6" ,"noUV.T1.T6", "Carbon.T1.T6", "Hetero.T1.T6",  
                                 "Carbon.Hetero", "Nylon.PE", "PE.PET", "PP.PET", "PS.PE", "PS.PP", 
@@ -427,10 +427,10 @@ Table <- ggplot(Simper.summ.p, # plot expanded df
                                "PS.PE.T6",  "PS.PP.T6" )) + 
    scale_y_discrete(breaks = c( "Cummulative.Difference", "Avg.dissimilarity"),
                    limits = c( "Cummulative.Difference", "Avg.dissimilarity"),
-                   labels = c( "Cumulative difference\n caused by 10 genera", "Average Dissimilarity" ))+
+                   labels = c( "Cumulative difference caused by 10 genera", "Average Dissimilarity" ))+
   theme(
     axis.text.x=element_blank(), 
-    axis.text.y=element_text(size = 14, face = "bold", color = "black"), 
+    axis.text.y=element_text(size = 28, face = "bold", color = "black"), 
     axis.title.x = element_blank(),
     axis.title.y = element_blank(),
     #strip.text.x = element_text(size = 15),
@@ -459,3 +459,5 @@ plot_grid(Table,
           align = 'v',
           axis = "l",
           rel_heights = c(0.18,1))
+
+ggsave("SIMPER.tiff", width = 20, height  = 10, unit = "cm", dpi = 500)
